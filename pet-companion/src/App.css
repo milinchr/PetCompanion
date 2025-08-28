@@ -1,0 +1,102 @@
+
+.App {
+  text-align: center;
+}
+
+.Header-navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: white;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000; 
+  background-color: #ffffff;
+  font-family: 'Roboto';
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  color: #333333;
+}
+
+small, input {
+  font-family: 'Roboto', sans-serif;
+  color: #333333;
+}
+
+.PetPanel {
+  position: sticky;
+  background-image: url('./assets/paws-bg.png');
+  background-size: cover;
+  background-position: center;
+  padding: 40px;
+  margin-left: 90px;
+  border-radius: 12px;
+  border: 1px solid #E0E0E0;
+  width: 590px;
+  height: 740px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 80px;
+  align-self: flex-start;
+}
+
+.PetPanel .progress {
+  width: 400px;
+  top: 100px;
+}
+
+.PetPanel .progress-bar {
+  background-color: #56CCF2;
+}
+
+.panels-container {
+  display: flex;
+  gap: 40px;
+  margin-top: 80px;
+  align-items: flex-start;
+}
+
+.PostPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 30px;
+  max-width: 1050px;
+  margin: 30px auto;
+  text-align: left;
+}
+
+.card:hover {
+  background-color: #F7F6F2;
+}
+
+#btn-like {
+  background-color: #6FCF97;
+  border: transparent;
+  border-radius: 12px;
+}
+
+#btn-like:hover {
+  background-color: #57B985;
+}
+
+#btn-skip {
+  background-color: #8E9AAF;
+  border: transparent;
+  border-radius: 12px;
+}
+
+#btn-skip:hover {
+  background-color: #7B8597;
+}

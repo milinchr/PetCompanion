@@ -5,9 +5,6 @@ import PostPanel from "./post-panel";
 const MainPage = () => {
     return (
         <div className='main-page'>
-            <header className="Header-navigation">
-                <NavigationBar></NavigationBar>
-            </header>
             <div className="panels-container">
                 <PetPanel name='Melisa' username='@milin_chr' type="cat" level={2} XP={15}></PetPanel>
                 <PostPanel></PostPanel>

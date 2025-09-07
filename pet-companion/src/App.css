@@ -22,8 +22,6 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-
-
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;
   color: #333333;
@@ -32,6 +30,10 @@ h1, h2, h3, h4, h5, h6 {
 small, input {
   font-family: 'Roboto', sans-serif;
   color: #333333;
+}
+
+button {
+  font-family: 'Nunito', sans-serif;
 }
 
 .PetPanel {
@@ -102,4 +104,29 @@ small, input {
 
 #btn-skip:hover {
   background-color: #7B8597;
+}
+
+#btn-login, #btn-logout{
+  background-color: #FF6F61;
+  color: #ffffff;
+  font-weight: bold;
+  border: transparent;
+  border-radius: 12px;
+}
+
+#btn-login:hover, #btn-logout:hover {
+  background-color: #E85A4E;
+}
+
+.Login-Page {
+  height: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: 
+    linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(255,255,255,1) 120%),
+    url('./assets/login-bg.png') no-repeat center center;
+  background-size: cover;
+
+  overflow: hidden;
 }

@@ -1,7 +1,11 @@
 import logo from "../images/logo.png";
 import { Link } from "react-router-dom";
+import LogoutButton from "./logout-button";
+import { useAuth } from "./auth-context";
 
 const NavigationBar = () => {
+    const {isLoggedIn} = useAuth();
+
     return <header className="Header-navigation">
         <nav className="navbar navbar-expand-lg bg-body-tertiary" id="my-navbar">
             <div className="container-fluid">
@@ -12,15 +16,21 @@ const NavigationBar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                    <Link className="nav-link active" aria-current="page" to="/">Home</Link>
+                <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to="/">Create Post</Link>
+                <Link className="nav-link" to="/">Create Post</Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to="/">Pet Care Tips</Link>
+                <Link className="nav-link" to="/">Pet Care Tips</Link>
                 </li>
             </ul>
+
+            {isLoggedIn && (
+                <div className="d-flex align-items-center">
+                <LogoutButton />
+                </div>
+            )}
             </div>
         </div>
     </nav>

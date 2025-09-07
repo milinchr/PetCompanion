@@ -2,9 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import MainPage from './components/main-page';
 import NavigationBar from './components/navigation';
-import LoginPage from './components/login-page';
+import SignUp from './components/sign-up';
 import { AuthProvider, useAuth } from "./components/auth-context";
 import './App.css';
+import SignIn from './components/sign-in';
 
 function AppRoutes() {
   const { isLoggedIn } = useAuth();
@@ -13,11 +14,15 @@ function AppRoutes() {
     <Routes>
       <Route
         path="/"
-        element={isLoggedIn ? <MainPage /> : <Navigate to="/login" replace />}
+        element={isLoggedIn ? <MainPage /> : <Navigate to="/sign-up" replace />}
       />
       <Route
-        path="/login"
-        element={isLoggedIn ? <Navigate to="/" replace /> : <LoginPage />}
+        path="/sign-up"
+        element={isLoggedIn ? <Navigate to="/" replace /> : <SignUp />}
+      />
+      <Route
+        path="/sign-in"
+        element={isLoggedIn ? <Navigate to="/" replace /> : <SignIn />}
       />
     </Routes>
   );

@@ -8,7 +8,7 @@ interface IPost {
     likes : number;
 }
 
-const TestPost = ({title, content, photo, likes = 0} : IPost) => {
+const Post = ({title, content, photo, likes = 0} : IPost) => {
     const [likeCounter, setLikeCounter] = useState(likes);
 
     const handleLike = () => {
@@ -52,4 +52,4 @@ const TestPost = ({title, content, photo, likes = 0} : IPost) => {
   );
 };
 
-export default TestPost;
+export default Post;

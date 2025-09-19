@@ -6,6 +6,8 @@ import SignUp from './components/sign-up';
 import { AuthProvider, useAuth } from "./components/auth-context";
 import './App.css';
 import SignIn from './components/sign-in';
+import Tips from "./components/tips";
+import CreatePost from "./components/CreatePost";
 
 function AppRoutes() {
   const { isLoggedIn } = useAuth();
@@ -38,6 +40,9 @@ function App() {
           </header>
           <div className="PetCompanionApp">
             <AppRoutes />
+          </div>
+          <div>
+            < CreatePost />
           </div>
         </div>
       </Router>

@@ -5,10 +5,24 @@ import * as yup from 'yup';
 import { useAuth } from "./auth-context";
 import { TextField, Box, Typography } from '@mui/material';
 
+const pets = [
+    {id: "cat", name: "Cat"},
+    {id: "dog", name: "Dog"},
+    {id: "hamster", name: "Hamster"},
+    {id: "parrot", name: "Parrot"},
+    {id: "rabbit", name: "Rabbit"},
+]
+
 const validationSchema = yup.object().shape({
     username: yup.string().required('Username is required'),
     petName: yup.string().required('Pet name is required'),
-    password: yup.string().required('Password is required'),
+    petType: yup.string().required('Please select a pet type'),
+    password: yup.string()
+        .required('Password is required')
+        .min(8, 'Minimum 8 characters')
+        .matches(/[A-Z]/, 'At least one uppercase letter required')
+        .matches(/[a-z]/, 'At least one lowercase letter required')
+        .matches(/\d/, 'At least one digit required'),
     confirmPassword: yup
         .string()
         .required('Please confirm your password')
@@ -18,6 +32,7 @@ const validationSchema = yup.object().shape({
 interface IFormData {
     username: string;
     petName: string;
+    petType: string;
     password: string;
     confirmPassword: string;
 }
@@ -29,8 +44,26 @@ const SignUp = () => {
 
     const { login } = useAuth();
 
+    const checkUsernameExists = (username: string) => !!localStorage.getItem(username);
+
     const onSubmit = (data: IFormData) => {
-        login(data.username, data.petName, data.password);
+        if (checkUsernameExists(data.username)) {
+            alert("✖ Username is already taken");
+            return;
+        }
+
+        const success = login(
+            data.username,
+            data.password,
+            data.petName,
+            data.petType
+        );
+
+        if (!success) {
+            alert("✖ Registration failed. Check your credentials");
+        } else {
+            alert("✔ Account created successfully!");
+        }
     };
 
     return (
@@ -121,6 +154,35 @@ const SignUp = () => {
                             />
                         )}
                     />
+                    <Controller
+                        name="petType"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                            <div style={{ display: "flex", flexDirection: "column", gap: "4px", alignItems: "center" }}>
+                            <label style={{ marginBottom: "2px", fontWeight: "500" }}>Which pet do you have at home?</label>
+                            <div className="btn-group" role="group" aria-label="Pet options">
+                                {pets.map((pet) => (
+                                <div key={pet.id}>
+                                    <input
+                                    type="radio"
+                                    className="btn-check"
+                                    id={pet.id}
+                                    value={pet.id}
+                                    checked={field.value === pet.id}
+                                    onChange={() => field.onChange(pet.id)}
+                                    />
+                                    <label className="btn btn-outline-secondary" htmlFor={pet.id}>
+                                    {pet.name}
+                                    </label>
+                                </div>
+                                ))}
+                            </div>
+                            {errors.petType && <p style={{ color: "red" }}>{errors.petType.message}</p>}
+                            </div>
+                        )}
+                        />
+
 
                     <button className="btn btn-secondary" id="btn-login" type="submit" style={{width:"50%", alignSelf:"center"}}>
                         Sign Up

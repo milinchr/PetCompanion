@@ -23,9 +23,9 @@ const SignInPage = () => {
   const { login } = useAuth();
 
   const onSubmit = (data: IFormData) => {
-    const success = login(data.username, '', data.password);
+    const success = login(data.username, data.password);
     if (!success) {
-      alert('❌ Wrong username or password');
+      alert('✖ Wrong username or password');
     }
   };
 

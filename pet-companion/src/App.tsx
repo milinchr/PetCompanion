@@ -7,7 +7,7 @@ import { AuthProvider, useAuth } from "./components/auth-context";
 import './App.css';
 import SignIn from './components/sign-in';
 import Tips from "./components/tips";
-import CreatePost from "./components/CreatePost";
+import CreatePost from "./components/create-post";
 
 function AppRoutes() {
   const { isLoggedIn } = useAuth();
@@ -26,6 +26,11 @@ function AppRoutes() {
         path="/sign-in"
         element={isLoggedIn ? <Navigate to="/" replace /> : <SignIn />}
       />
+      <Route
+        path="/create-post"
+        element={isLoggedIn ? <CreatePost /> : <Navigate to="/sign-in" replace />}
+      />
+      <Route path="/tips" element={<Tips />} />
     </Routes>
   );
 }
@@ -40,9 +45,6 @@ function App() {
           </header>
           <div className="PetCompanionApp">
             <AppRoutes />
-          </div>
-          <div>
-            < CreatePost />
           </div>
         </div>
       </Router>

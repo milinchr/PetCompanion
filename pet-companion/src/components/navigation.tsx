@@ -37,7 +37,7 @@ const NavigationBar = () => {
                                 <Link className={getNavLinkClass("/create-post")} to="/create-post">Create Post</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className={getNavLinkClass("/pet-tips")} to="/pet-tips">Pet Care Tips</Link>
+                                <Link className={getNavLinkClass("/pet-tips")} to="/tips">Pet Care Tips</Link>
                             </li>
                         </ul>
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card, CardContent, Typography, Button, Grid, Chip,} from "@mui/material";
-import StarRating from "./StarRating";
+import StarRating from "./star-rating";
 
 type Tip = {
   id: number;

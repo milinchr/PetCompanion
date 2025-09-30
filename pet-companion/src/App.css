@@ -130,3 +130,9 @@ button {
 
   overflow: hidden;
 }
+
+.Pet-Option {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}

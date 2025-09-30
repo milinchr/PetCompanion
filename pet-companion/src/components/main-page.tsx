@@ -8,14 +8,8 @@ const MainPage = () => {
     return (
         <div className='main-page'>
             <div className="panels-container">
-                <PetPanel
-                    name={user?.petName || 'Pet'}
-                    username={user?.username || '@user'}
-                    type="cat"
-                    level={user?.level ?? 0}
-                    XP={user?.xp ?? 0}
-                />
-                <PostPanel />
+                <PetPanel/>
+                <PostPanel/>
             </div>
         </div>
     );

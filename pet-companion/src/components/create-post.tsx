@@ -58,24 +58,51 @@ const CreatePost: React.FC = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 800, margin: "0 auto", padding: 3, backgroundColor: "#f5f5f5" }}>
-      <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: "center", marginBottom: 4 }}>
+    <Box 
+      sx={{ 
+        minHeight: "93vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 3,
+        backgroundColor: "#FFFDF7",
+        pt: 4
+      }}
+    >
+      
+      <Typography 
+        variant="h4" 
+        component="h1" 
+        gutterBottom 
+        sx={{ 
+          textAlign: "center", 
+          marginBottom: 4,
+          width: "100%"
+        }}
+      >
         Create a New Post
       </Typography>
 
-      <Box display="flex" flexDirection="column" gap={4}>
-        <Box sx={{ backgroundColor: "white", p: 3, borderRadius: 2, boxShadow: 2 }}>
+      
+      <Card 
+        sx={{ 
+          width: "100%", 
+          maxWidth: 600,
+          p: 3,
+          mb: 4
+        }}
+      >
+        <CardContent sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
           <TextField
             label="Title"
             fullWidth
-            margin="normal"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <TextField
             label="Content"
             fullWidth
-            margin="normal"
             multiline
             rows={4}
             value={content}
@@ -86,24 +113,50 @@ const CreatePost: React.FC = () => {
             component="label"
             variant="outlined"
             startIcon={<CloudUploadIcon />}
-            sx={{ mt: 2, mb: 2,color: '#828282',borderColor: '#828282','&:hover': {backgroundColor: '#828282',color: 'white', borderColor: '#828282',  }}}fullWidth>
+            sx={{ 
+              color: '#828282',
+              borderColor: '#828282',
+              '&:hover': {
+                backgroundColor: '#828282',
+                color: 'white', 
+                borderColor: '#828282',
+              }
+            }}
+          >
             Upload Image
-            <VisuallyHiddenInput type="file" accept="image/*" onChange={handleImageUpload} ref={fileInputRef}/>
-
+            <VisuallyHiddenInput 
+              type="file" 
+              accept="image/*" 
+              onChange={handleImageUpload} 
+              ref={fileInputRef}
+            />
           </Button>
 
           {image && (
-            <Box sx={{ mt: 2, mb: 2, textAlign: "center" }}>
+            <Box sx={{ textAlign: "center" }}>
               <img src={image} alt="Preview" style={{ maxWidth: "100%", maxHeight: 200, borderRadius: 8 }} />
             </Box>
           )}
 
-          <Button variant="contained" color="primary" onClick={handleSubmit} sx={{ mt: 2, fontWeight: "bold", borderRadius: 2, backgroundColor: "#FF6F61", }} fullWidth>
+          <Button 
+            variant="contained" 
+            onClick={handleSubmit} 
+            sx={{ 
+              fontWeight: "bold", 
+              borderRadius: 2, 
+              backgroundColor: "#FF6F61",
+              '&:hover': {
+                backgroundColor: "#E55A50"
+              }
+            }}
+          >
             Create Post
           </Button>
-        </Box>
+        </CardContent>
+      </Card>
 
-        {/* Display posts */}
+     
+      <Box sx={{ width: "100%", maxWidth: 600 }}>
         {posts.map((post) => (
           <Card key={post.id} sx={{ mb: 2 }}>
             {post.image && (
@@ -121,5 +174,3 @@ const CreatePost: React.FC = () => {
 };
 
 export default CreatePost;
-
-

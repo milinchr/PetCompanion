@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { Card, CardContent, TextField, Button, Typography, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { useAuth } from "../components/auth-context";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -15,121 +16,67 @@ const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
 });
 
-type Post = {
-  id: number;
-  title: string;
-  content: string;
-  image: string | null;
-};
-
 const CreatePost: React.FC = () => {
+  const { user, updateUser, addPost } = useAuth();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState<string | null>(null);
-  const [posts, setPosts] = useState<Post[]>([]);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
-        setImage(e.target?.result as string);
-      };
+      reader.onload = (e) => setImage(e.target?.result as string);
       reader.readAsDataURL(file);
     }
   };
 
   const handleSubmit = () => {
-    if (!title || !content) return;
-    const newPost: Post = {
-      id: Date.now(),
+    if (!title || !content || !user) return;
+
+    const newPost = {
+      id: Date.now().toString(),
       title,
       content,
-      image,
+      photo: image || undefined,
+      likes: 0,
     };
-    setPosts([newPost, ...posts]);
+
+    addPost(newPost); 
+
+    
+    const xpToAdd = image ? 10 : 5;
+    let newXP = user.xp + xpToAdd;
+    let newLevel = user.level;
+
+    if (newXP >= 20) {
+      newXP -= 20;
+      newLevel += 1;
+    }
+
+    updateUser({ ...user, xp: newXP, level: newLevel });
+
     setTitle("");
     setContent("");
     setImage(null);
-
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   return (
-    <Box 
-      sx={{ 
-        minHeight: "93vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 3,
-        backgroundColor: "#FFFDF7",
-        pt: 4
-      }}
-    >
-      
-      <Typography 
-        variant="h4" 
-        component="h1" 
-        gutterBottom 
-        sx={{ 
-          textAlign: "center", 
-          marginBottom: 4,
-          width: "100%"
-        }}
-      >
+    <Box sx={{ minHeight: "93vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 3, backgroundColor: "#FFFDF7", pt: 4 }}>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: "center", marginBottom: 4, width: "100%" }}>
         Create a New Post
       </Typography>
 
-      
-      <Card 
-        sx={{ 
-          width: "100%", 
-          maxWidth: 600,
-          p: 3,
-          mb: 4
-        }}
-      >
+      <Card sx={{ width: "100%", maxWidth: 600, p: 3, mb: 4 }}>
         <CardContent sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-          <TextField
-            label="Title"
-            fullWidth
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <TextField
-            label="Content"
-            fullWidth
-            multiline
-            rows={4}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <TextField label="Title" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} />
+          <TextField label="Content" fullWidth multiline rows={4} value={content} onChange={(e) => setContent(e.target.value)} />
 
-          <Button
-            component="label"
-            variant="outlined"
-            startIcon={<CloudUploadIcon />}
-            sx={{ 
-              color: '#828282',
-              borderColor: '#828282',
-              '&:hover': {
-                backgroundColor: '#828282',
-                color: 'white', 
-                borderColor: '#828282',
-              }
-            }}
-          >
+          <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} sx={{ color: "#828282", borderColor: "#828282", "&:hover": { backgroundColor: "#828282", color: "white", borderColor: "#828282" } }}>
             Upload Image
-            <VisuallyHiddenInput 
-              type="file" 
-              accept="image/*" 
-              onChange={handleImageUpload} 
-              ref={fileInputRef}
-            />
+            <VisuallyHiddenInput type="file" accept="image/*" onChange={handleImageUpload} ref={fileInputRef} />
           </Button>
 
           {image && (
@@ -138,37 +85,11 @@ const CreatePost: React.FC = () => {
             </Box>
           )}
 
-          <Button 
-            variant="contained" 
-            onClick={handleSubmit} 
-            sx={{ 
-              fontWeight: "bold", 
-              borderRadius: 2, 
-              backgroundColor: "#FF6F61",
-              '&:hover': {
-                backgroundColor: "#E55A50"
-              }
-            }}
-          >
+          <Button variant="contained" onClick={handleSubmit} sx={{ fontWeight: "bold", borderRadius: 2, backgroundColor: "#FF6F61", "&:hover": { backgroundColor: "#E55A50" } }}>
             Create Post
           </Button>
         </CardContent>
       </Card>
-
-     
-      <Box sx={{ width: "100%", maxWidth: 600 }}>
-        {posts.map((post) => (
-          <Card key={post.id} sx={{ mb: 2 }}>
-            {post.image && (
-              <img src={post.image} alt={post.title} style={{ width: "100%", maxHeight: 200, objectFit: "cover" }} />
-            )}
-            <CardContent>
-              <Typography variant="h6">{post.title}</Typography>
-              <Typography variant="body2">{post.content}</Typography>
-            </CardContent>
-          </Card>
-        ))}
-      </Box>
     </Box>
   );
 };

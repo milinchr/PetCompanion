@@ -34,10 +34,10 @@ const NavigationBar = () => {
                                 <Link className={getNavLinkClass("/")} aria-current="page" to="/">Home</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className={getNavLinkClass("/create-post")} to="/create-post">Create Post</Link>
+                                <Link className={getNavLinkClass("/create-post")} to="/create-post">CreatePost</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className={getNavLinkClass("/pet-tips")} to="/tips">Pet Care Tips</Link>
+                                <Link className={getNavLinkClass("/pet-tips")} to="/tips">CareTips</Link>
                             </li>
                         </ul>
 

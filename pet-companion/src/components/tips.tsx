@@ -142,7 +142,7 @@ export default function Tips() {
   };
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={3} sx={{ mt: 2, px: 2 }}>
       {tips.map((tip) => (
         <Grid key={tip.id} sx={{ flex: "1 1 300px", maxWidth: 400 }}>
           <Card sx={{ borderRadius: 3, p: 2, boxShadow: 3 }}>

@@ -1,19 +1,29 @@
 import { useState, useEffect } from "react";
 import pawsImg from "../assets/paw-likes.png";
 import { useAuth } from "../components/auth-context";
+import { useNavigate } from "react-router-dom";
 
 interface IPost {
   id: string;
   title: string;
+  username: string;
   content: string;
   photo?: string;
   likes?: number;
+  petType: string;
 }
 
-const Post = ({ id, title, content, photo, likes = 0 }: IPost) => {
+const Post = ({ id, title, username, content, photo, likes = 0,
+    petType }: IPost) => {
   const { user, updateUser } = useAuth();
   const [likeCounter, setLikeCounter] = useState(likes);
   const [liked, setLiked] = useState(false);
+  const navigate = useNavigate();
+
+  const isOwner = user?.username === username;
+  const handleUsernameClick = () => {
+    navigate(`/profile/${username}`);
+  };
 
   useEffect(() => {
     const storedLikes = JSON.parse(localStorage.getItem("postLikes") || "{}");
@@ -28,7 +38,7 @@ const Post = ({ id, title, content, photo, likes = 0 }: IPost) => {
   }, [id, user]);
 
   const handleLike = () => {
-    if (!user) return;
+    if (!user || isOwner) return;
 
     const likedPosts = JSON.parse(localStorage.getItem(`${user.username}-likes`) || "[]");
 
@@ -69,6 +79,9 @@ const Post = ({ id, title, content, photo, likes = 0 }: IPost) => {
         <div className={photo ? "col-md-8 d-flex flex-column" : "col-12 d-flex flex-column"}>
           <div className="card-body d-flex flex-column" style={{ height: "100%", textAlign: "left" }}>
             <h4 className="card-title">{title}</h4>
+            <p style={{fontSize: "13px", cursor: "pointer",
+                display: "inline-block"}} 
+                onClick={handleUsernameClick}>@{username}</p>
             <p className="card-text" style={{ fontSize: "16px" }}>{content}</p>
 
             <div style={{ marginTop: "auto" }}>
@@ -82,7 +95,7 @@ const Post = ({ id, title, content, photo, likes = 0 }: IPost) => {
                   id="btn-like"
                   type="button"
                   onClick={handleLike}
-                  disabled={liked}
+                  disabled={liked || isOwner}
                 >
                   <img src={pawsImg} alt="paws" width={15} height={15} /> Like
                 </button>

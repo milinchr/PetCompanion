@@ -33,29 +33,30 @@ const CreatePost: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    if (!title || !content || !user) return;
+  if (!title || !content || !user) return;
 
-    const newPost = {
-      id: Date.now().toString(),
-      title,
-      content,
-      photo: image || undefined,
-      likes: 0,
-    };
+  const newPost = {
+    id: Date.now().toString(),
+    title,
+    username: user.username,
+    content,
+    photo: image || undefined,
+    likes: 0,
+    petType: user.petType,
+  };
 
-    addPost(newPost); 
+  addPost(newPost);
 
-    
-    const xpToAdd = image ? 10 : 5;
-    let newXP = user.xp + xpToAdd;
-    let newLevel = user.level;
+  const xpToAdd = image ? 10 : 5;
+  let newXP = user.xp + xpToAdd;
+  let newLevel = user.level;
 
-    if (newXP >= 20) {
-      newXP -= 20;
-      newLevel += 1;
-    }
+  if (newXP >= 20) {
+    newXP -= 20;
+    newLevel += 1;
+  }
 
-    updateUser({ ...user, xp: newXP, level: newLevel });
+  updateUser({ ...user, xp: newXP, level: newLevel });
 
     setTitle("");
     setContent("");

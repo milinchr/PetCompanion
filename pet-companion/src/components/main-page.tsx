@@ -10,8 +10,6 @@ const MainPage = () => {
     const handleAddClick = () => {
         navigate('/create-post');};
 
-
-
     return (
         <div className='main-page'>
             <div className="panels-container">

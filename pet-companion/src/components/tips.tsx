@@ -232,7 +232,7 @@ export default function Tips() {
       </Box>
 
       <Typography variant="h4" sx={{ mb: 4, fontWeight: "bold", color: "#333" }}>
-        🐾 Pet Care Tips
+        <h1>🐾 Pet Care Tips</h1>
       </Typography>
 
 

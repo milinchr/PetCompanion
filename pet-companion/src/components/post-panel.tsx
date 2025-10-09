@@ -4,6 +4,7 @@ import Post from "./post";
 
 const PostPanel = () => {
   const { posts } = useAuth();
+  const { user } = useAuth();
 
   return (
     <div>
@@ -12,10 +13,12 @@ const PostPanel = () => {
         <Post
           key={post.id}
           id={post.id}
+          username={post.username}
           title={post.title}
           content={post.content}
           photo={post.photo}
           likes={post.likes}
+          petType={post.petType}
         />
       ))}
     </div>

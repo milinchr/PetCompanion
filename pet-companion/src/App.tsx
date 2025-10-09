@@ -9,6 +9,7 @@ import SignIn from './components/sign-in';
 import Tips from "./components/tips";
 import CreatePost from "./components/create-post";
 import CreateTips from "./components/create-tips";
+import ProfilePage from './components/profile-page';
 
 function AppRoutes() {
   const { isLoggedIn } = useAuth();
@@ -36,6 +37,7 @@ function AppRoutes() {
         path="/create-tips"
         element={isLoggedIn ? <CreateTips /> : <Navigate to="/sign-in" replace />}
       />
+      <Route path="/profile/:username" element={<ProfilePage />} />
     </Routes>
   );
 }

@@ -29,7 +29,7 @@ const CreateTips: React.FC = () => {
       }}
     >
       <Typography variant="h4" sx={{ mb: 4, fontWeight: "bold" }}>
-        ✏️ Create a New Tip
+        <h1>✏️ Create a New Tip</h1>
       </Typography>
 
       <Card sx={{ width: "100%", maxWidth: 600, p: 3 }}>

@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { useAuth } from "../components/auth-context";
+import { useNavigate } from "react-router-dom";
 
 import cat from "../images/pets/cat.png";
 import dog from "../images/pets/dog.png";
 import hamster from "../images/pets/hamster.png";
 import parrot from "../images/pets/parrot.png";
 import rabbit from "../images/pets/rabbit.png";
+
 
 const pets: Record<
   string,
@@ -20,9 +22,14 @@ const pets: Record<
 
 const PetPanel = () => {
   const { user, updateUser } = useAuth();
+  const navigate = useNavigate();
 
   const level = user?.level ?? 0;
   const xp = user?.xp ?? 0;
+
+  const handleClick = () => {
+    if (user) navigate(`/profile/${user.username}`);
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -43,7 +50,8 @@ const PetPanel = () => {
   return (
     <div className="PetPanel">
       <h1>{user.petName}</h1>
-      <p>{user.username}</p>
+      <p onClick={handleClick} 
+      style={{cursor: "pointer"}}>{user.username}</p>
       <img src={pet.image} width={500} height={500} alt={pet.name} />
       <p>
         Level: {user.level} (XP: {user.xp})

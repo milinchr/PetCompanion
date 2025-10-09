@@ -18,9 +18,11 @@ interface UserData {
 interface PostData {
   id: string;
   title: string;
+  username: string;
   content: string;
   photo?: string;
   likes: number;
+  petType: string;
 }
 
 interface AuthContextType {
@@ -48,17 +50,21 @@ const defaultPosts: PostData[] = [
   {
     id: "p1",
     title: "Murka",
+    username: "use1",
     content: "Murka is sleepy again <3",
     photo: post1,
     likes: 0,
+    petType: "cat",
   },
   {
     id: "p2",
     title: "Angry Bella",
+    username: "user2",
     content:
       "Meet Bella, the grumpy queen of the house. I caught her mid-scowl because she wasn’t in the mood for cuddles—sometimes her attitude is just too photogenic to resist!",
     photo: post2,
     likes: 0,
+    petType: "cat",
   },
 ];
 

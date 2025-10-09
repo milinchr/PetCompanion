@@ -1,7 +1,9 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import pawsImg from "../assets/paw-likes.png";
 import { useAuth } from "../components/auth-context";
 import { useNavigate } from "react-router-dom";
+
 
 interface IPost {
   id: string;
@@ -24,6 +26,7 @@ const Post = ({ id, title, username, content, photo, likes = 0,
   const handleUsernameClick = () => {
     navigate(`/profile/${username}`);
   };
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const storedLikes = JSON.parse(localStorage.getItem("postLikes") || "{}");
@@ -34,6 +37,8 @@ const Post = ({ id, title, username, content, photo, likes = 0,
     if (user) {
       const likedPosts = JSON.parse(localStorage.getItem(`${user.username}-likes`) || "[]");
       if (likedPosts.includes(id)) setLiked(true);
+      const skippedPosts = JSON.parse(localStorage.getItem(`${user.username}-skipped`) || "[]");
+      if (skippedPosts.includes(id)) setVisible(false);
     }
   }, [id, user]);
 
@@ -58,6 +63,21 @@ const Post = ({ id, title, username, content, photo, likes = 0,
       updateUser(newUserData);
     }
   };
+
+
+  const handleSkip = () => {
+    if (!user) return;
+    setVisible(false);
+    const skippedPosts = JSON.parse(localStorage.getItem(`${user.username}-skipped`) || "[]");
+    if (!skippedPosts.includes(id)) {
+      skippedPosts.push(id);
+      localStorage.setItem(`${user.username}-skipped`, JSON.stringify(skippedPosts));
+    }
+  };
+
+    
+
+    if (!visible) return null;
 
   return (
     <div className="card mb-3" style={{ width: "1000px", border: "1px solid #E0E0E0" }}>
@@ -100,7 +120,7 @@ const Post = ({ id, title, username, content, photo, likes = 0,
                   <img src={pawsImg} alt="paws" width={15} height={15} /> Like
                 </button>
 
-                <button className="btn btn-secondary" id="btn-skip" type="button">
+                <button className="btn btn-secondary" id="btn-skip" type="button" onClick={handleSkip}>
                   Skip
                 </button>
               </div>

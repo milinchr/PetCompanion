@@ -1,6 +1,8 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import pawsImg from "../assets/paw-likes.png";
 import { useAuth } from "../components/auth-context";
+
 
 interface IPost {
   id: string;
@@ -8,12 +10,14 @@ interface IPost {
   content: string;
   photo?: string;
   likes?: number;
+  
 }
 
 const Post = ({ id, title, content, photo, likes = 0 }: IPost) => {
   const { user, updateUser } = useAuth();
   const [likeCounter, setLikeCounter] = useState(likes);
   const [liked, setLiked] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const storedLikes = JSON.parse(localStorage.getItem("postLikes") || "{}");
@@ -24,6 +28,8 @@ const Post = ({ id, title, content, photo, likes = 0 }: IPost) => {
     if (user) {
       const likedPosts = JSON.parse(localStorage.getItem(`${user.username}-likes`) || "[]");
       if (likedPosts.includes(id)) setLiked(true);
+      const skippedPosts = JSON.parse(localStorage.getItem(`${user.username}-skipped`) || "[]");
+      if (skippedPosts.includes(id)) setVisible(false);
     }
   }, [id, user]);
 
@@ -48,6 +54,21 @@ const Post = ({ id, title, content, photo, likes = 0 }: IPost) => {
       updateUser(newUserData);
     }
   };
+
+
+  const handleSkip = () => {
+    if (!user) return;
+    setVisible(false);
+    const skippedPosts = JSON.parse(localStorage.getItem(`${user.username}-skipped`) || "[]");
+    if (!skippedPosts.includes(id)) {
+      skippedPosts.push(id);
+      localStorage.setItem(`${user.username}-skipped`, JSON.stringify(skippedPosts));
+    }
+  };
+
+    
+
+    if (!visible) return null;
 
   return (
     <div className="card mb-3" style={{ width: "1000px", border: "1px solid #E0E0E0" }}>
@@ -87,7 +108,7 @@ const Post = ({ id, title, content, photo, likes = 0 }: IPost) => {
                   <img src={pawsImg} alt="paws" width={15} height={15} /> Like
                 </button>
 
-                <button className="btn btn-secondary" id="btn-skip" type="button">
+                <button className="btn btn-secondary" id="btn-skip" type="button" onClick={handleSkip}>
                   Skip
                 </button>
               </div>

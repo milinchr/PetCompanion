@@ -7,6 +7,10 @@ interface UserData {
   petName: string;
   petType: string;
   password: string;
+  treat: string;
+  age: number;
+  color: string;
+  eyes: string;
   level: number;
   xp: number;
 }
@@ -27,7 +31,11 @@ interface AuthContextType {
     username: string,
     password: string,
     petName?: string,
-    petType?: string
+    petType?: string,
+    treat?: string,
+    age?: string,
+    color?: string,
+    eyes?: string,
   ) => boolean;
   logout: () => void;
   updateUser: (updatedUser: UserData) => void;
@@ -58,24 +66,37 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserData | null>(null);
   const [posts, setPosts] = useState<PostData[]>([]);
 
-  // Load user & posts when app starts
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     const savedPosts = localStorage.getItem("posts");
 
     if (savedUser) setUser(JSON.parse(savedUser));
-    if (savedPosts) {
-      setPosts([...defaultPosts, ...JSON.parse(savedPosts)]);
-    } else {
-      setPosts(defaultPosts);
+
+    let currentPosts: PostData[] = savedPosts ? JSON.parse(savedPosts) : [];
+
+    const existingIds = new Set(currentPosts.map((p) => p.id));
+
+    const newDefaultPosts = defaultPosts.filter(
+      (p) => !existingIds.has(p.id)
+    );
+
+    if (newDefaultPosts.length > 0) {
+      currentPosts = [...newDefaultPosts, ...currentPosts];
+      localStorage.setItem("posts", JSON.stringify(currentPosts));
     }
+
+    setPosts(currentPosts);
   }, []);
 
   const login = (
     username: string,
     password: string,
     petName?: string,
-    petType?: string
+    petType?: string,
+    treat?: string,
+    age?: string,
+    color?: string,
+    eyes?: string,
   ): boolean => {
     const savedUser = localStorage.getItem(username);
 
@@ -94,6 +115,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         petName,
         petType,
         password,
+        treat: treat || "",
+        age: Number(age) || 0,
+        color: color || "",
+        eyes: eyes || "",
         level: 0,
         xp: 0,
       };

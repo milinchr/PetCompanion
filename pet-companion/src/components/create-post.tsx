@@ -66,7 +66,7 @@ const CreatePost: React.FC = () => {
   return (
     <Box sx={{ minHeight: "93vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 3, backgroundColor: "#FFFDF7", pt: 4 }}>
       <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: "center", marginBottom: 4, width: "100%" }}>
-        Create a New Post
+        <h1>Create a New Post</h1>
       </Typography>
 
       <Card sx={{ width: "100%", maxWidth: 600, p: 3, mb: 4 }}>

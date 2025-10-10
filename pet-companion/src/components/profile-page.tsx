@@ -27,28 +27,88 @@ const ProfilePage = () => {
 
   if (!profileUser) return <p>User not found</p>;
 
-  const pet = pets[profileUser.petType] ?? pets["cat"];
+  const pet = pets[profileUser.petType] ?? pets["cat"]; // Why cat is default?
   const userPosts = posts.filter((p) => p.username === profileUser.username);
 
-  const getProgressWidth = (xp: number) => `${(xp / 20) * 100}%`;
+  const getProgressWidth = (xp: number) => `${(xp / 20) * 100}%`; // I noticed it's used in multiple places. Consider moving this to a utility file
 
   return (
-    <Box sx={{ padding: 4, display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <Card sx={{ width: "600px", borderRadius: 3, p: 3, mb: 4, backgroundColor: "#FFFDF7" }}>
-        <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
-          <img src={pet.image} alt={pet.name} width={200} height={200} style={{ borderRadius: 12 }} />
+    <Box
+      // Move to CSS or use styled-components
+      sx={{
+        padding: 4,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Card
+        // Move to CSS or use styled-components
+        sx={{
+          width: "600px",
+          borderRadius: 3,
+          p: 3,
+          mb: 4,
+          backgroundColor: "#FFFDF7",
+        }}
+      >
+        <CardContent
+          // Move to CSS or use styled-components
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <img
+            src={pet.image}
+            alt={pet.name}
+            width={200}
+            height={200}
+            style={{ borderRadius: 12 }}
+          />
           <Typography variant="h4">{profileUser.petName}</Typography>
           <Typography variant="subtitle1">@{profileUser.username}</Typography>
           <Typography>Pet Type: {pet.name}</Typography>
-          <Typography>Level: {profileUser.level} (XP: {profileUser.xp})</Typography>
-          <Box sx={{ width: "100%", backgroundColor: "#e0e0e0", borderRadius: 2, height: 10 }}>
-            <Box sx={{ width: getProgressWidth(profileUser.xp), backgroundColor: "#56CCF2", height: "100%", borderRadius: 2 }} />
+          <Typography>
+            Level: {profileUser.level} (XP: {profileUser.xp})
+          </Typography>
+          <Box
+            // Move to CSS or use styled-components
+            sx={{
+              width: "100%",
+              backgroundColor: "#e0e0e0",
+              borderRadius: 2,
+              height: 10,
+            }}
+          >
+            <Box
+              // Move to CSS or use styled-components
+              sx={{
+                width: getProgressWidth(profileUser.xp),
+                backgroundColor: "#56CCF2",
+                height: "100%",
+                borderRadius: 2,
+              }}
+            />
           </Box>
         </CardContent>
       </Card>
 
-      <Box sx={{ width: "100%", maxWidth: 1050, display: "flex", flexDirection: "column", gap: 2 }}>
-        <Typography variant="h5" sx={{ mb: 2 }}>Posts by @{profileUser.username}</Typography>
+      <Box
+        // Move to CSS or use styled-components
+        sx={{
+          width: "100%",
+          maxWidth: 1050,
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        <Typography variant="h5" sx={{ mb: 2 }}>
+          Posts by @{profileUser.username}
+        </Typography>
         {userPosts.length === 0 ? (
           <Typography>No posts yet.</Typography>
         ) : (

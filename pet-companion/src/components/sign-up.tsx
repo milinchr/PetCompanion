@@ -18,13 +18,15 @@ const validationSchema = yup.object().shape({
   username: yup.string().required("Username is required"),
   petName: yup.string().required("Pet name is required"),
   petType: yup.string().required("Please select a pet type"),
-  password: yup.string()
+  password: yup
+    .string()
     .required("Password is required")
     .min(8, "Minimum 8 characters")
     .matches(/[A-Z]/, "At least one uppercase letter required")
     .matches(/[a-z]/, "At least one lowercase letter required")
     .matches(/\d/, "At least one digit required"),
-  confirmPassword: yup.string()
+  confirmPassword: yup
+    .string()
     .required("Please confirm your password")
     .oneOf([yup.ref("password")], "Passwords do not match"),
   treat: yup.string().required("Favorite treat is required"),
@@ -33,6 +35,7 @@ const validationSchema = yup.object().shape({
   eyes: yup.string().required("Eye color is required"),
 });
 
+// Rename the interface to avoit I prefix
 interface IFormData {
   username: string;
   petName: string;
@@ -60,7 +63,8 @@ const SignUp = () => {
   const { login } = useAuth();
   const [step, setStep] = useState(1);
 
-  const checkUsernameExists = (username: string) => !!localStorage.getItem(username);
+  const checkUsernameExists = (username: string) =>
+    !!localStorage.getItem(username);
 
   const handleNextStep = async () => {
     const isValid = await trigger([
@@ -86,6 +90,11 @@ const SignUp = () => {
   const handleSignUp = async () => {
     const isValid = await trigger(["treat", "age", "color", "eyes"]);
     if (!isValid) return;
+    // The issue is that you are calling handleSubmit(onSubmit)()
+    // inside the handleSignUp function, which is not the recommended way to trigger
+    // form submission from a custom handler;
+    // instead, you should call handleSubmit(onSubmit) directly as a function,
+    //  or better move your validation logic into the onSubmit handler and call it only once.
     handleSubmit(onSubmit)();
   };
 
@@ -135,6 +144,8 @@ const SignUp = () => {
 
           {step === 1 && (
             <>
+              {/* I would suggest to extract the repeated code for Controller into a separate component to reduce redundancy
+            and pass the different values as props */}
               <Controller
                 name="username"
                 control={control}

@@ -1,5 +1,17 @@
 import React, { useState } from "react";
-import { Card, CardContent, Typography, Button, Chip,Box,Select, MenuItem, FormControl, SelectChangeEvent,IconButton } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Chip,
+  Box,
+  Select,
+  MenuItem,
+  FormControl,
+  SelectChangeEvent,
+  IconButton,
+} from "@mui/material";
 import StarRating from "./star-rating";
 import Slider from "react-slick";
 import SortIcon from "@mui/icons-material/Sort";
@@ -8,7 +20,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Add from "./add";
 import { useNavigate } from "react-router-dom";
 
-
+// It's better to use interface in this case, because you are defining the shape of an object
 type Tip = {
   id: number;
   author: string;
@@ -24,7 +36,8 @@ const tips: Tip[] = [
     author: "Emma Roberts",
     category: "Dogs",
     rating: 4,
-    shortText: "Always make sure your dog has fresh water and enough exercise daily...",
+    shortText:
+      "Always make sure your dog has fresh water and enough exercise daily...",
     fullText:
       "Always make sure your dog has fresh water and enough exercise daily. This helps prevent obesity and keeps them happy. Also, don’t forget regular vet check-ups!",
   },
@@ -33,7 +46,8 @@ const tips: Tip[] = [
     author: "John Smith",
     category: "Cats",
     rating: 5,
-    shortText: "Cats love scratching posts, it helps them stay active and save your furniture...",
+    shortText:
+      "Cats love scratching posts, it helps them stay active and save your furniture...",
     fullText:
       "Cats love scratching posts, it helps them stay active and save your furniture. Place scratching posts in multiple locations where the cat usually spends time.",
   },
@@ -139,12 +153,14 @@ export default function Tips() {
     setRatings((prev) => ({ ...prev, [id]: value }));
   };
 
+  // Delete if not used
   const calculateAverage = (values: number[]) => {
     if (!values.length) return 0;
     const total = values.reduce((sum, val) => sum + val, 0);
     return (total / values.length).toFixed(1);
   };
 
+  // Move to the top where all the consts are defined
   const [expanded, setExpanded] = useState<number | null>(null);
 
   const handleToggle = (id: number) => {
@@ -152,12 +168,14 @@ export default function Tips() {
   };
 
   const handleCategoryChange = (event: SelectChangeEvent) => {
-  setCategory(event.target.value);
-};
+    setCategory(event.target.value);
+  };
 
-  const filteredTips = category ? tips.filter(tip => tip.category === category) : tips;
+  const filteredTips = category
+    ? tips.filter((tip) => tip.category === category)
+    : tips;
 
-    const settings = {
+  const settings = {
     dots: true,
     infinite: true,
     speed: 600,
@@ -179,18 +197,20 @@ export default function Tips() {
     ],
   };
 
+  // You can navigate directly in the onClick without defining a separate function
   const handleAddClick = () => {
     navigate("/create-tips");
   };
 
   return (
     <Box
+      // Move to CSS or use styled-components
       sx={{
         height: "94vh",
-        width: "100%", 
+        width: "100%",
         display: "flex",
-        justifyContent: "center", 
-        alignItems: "center", 
+        justifyContent: "center",
+        alignItems: "center",
         flexDirection: "column",
         textAlign: "center",
         background: "#f6c4c0b4",
@@ -198,8 +218,8 @@ export default function Tips() {
         position: "relative",
       }}
     >
-
       <Box
+        // Move to CSS or use styled-components
         sx={{
           position: "absolute",
           top: 20,
@@ -231,20 +251,31 @@ export default function Tips() {
         )}
       </Box>
 
-      <Typography variant="h4" sx={{ mb: 4, fontWeight: "bold", color: "#333" }}>
+      <Typography
+        variant="h4"
+        sx={{ mb: 4, fontWeight: "bold", color: "#333" }}
+      >
         <h1>🐾 Pet Care Tips</h1>
       </Typography>
 
-
-      <Box sx={{ width: "90%", maxWidth: "1600px", justifyContent: "center", alignItems: "center", }}>
+      <Box
+        // Move to CSS or use styled-components
+        sx={{
+          width: "90%",
+          maxWidth: "1600px",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Slider {...settings}>
           {filteredTips.map((tip) => (
             <Box key={tip.id} sx={{ px: 2 }}>
               <Card
+                // Move to CSS or use styled-components
                 sx={{
                   borderRadius: 4,
                   p: 3,
-                  height: 400, 
+                  height: 400,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
@@ -260,6 +291,7 @@ export default function Tips() {
 
                   <Chip
                     label={tip.category}
+                    // Move to CSS or use styled-components
                     sx={{
                       backgroundColor: "#828282",
                       mb: 1,
@@ -287,6 +319,7 @@ export default function Tips() {
                   <Button
                     variant="contained"
                     size="small"
+                    // Move to CSS or use styled-components
                     sx={{
                       mt: 1,
                       borderRadius: 2,
@@ -308,11 +341,3 @@ export default function Tips() {
     </Box>
   );
 }
-
-
-
-
-
-
-
-

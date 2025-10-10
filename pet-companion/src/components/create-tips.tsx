@@ -1,6 +1,17 @@
 // src/pages/create-tips.tsx
 import React, { useState } from "react";
-import { Box, Card, CardContent, TextField, Button, Typography, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  TextField,
+  Button,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const CreateTips: React.FC = () => {
@@ -12,11 +23,13 @@ const CreateTips: React.FC = () => {
 
   const handleSubmit = () => {
     if (!author || !category || !shortText || !fullText) return;
+    // Remove console log if not needed anymore
     console.log("New Tip Created:", { author, category, shortText, fullText });
     navigate("/tips"); // navigate back after submission
   };
 
   return (
+    // Same comment as in create-post.tsx about moving styles to a separate file or using styled-components
     <Box
       sx={{
         minHeight: "94vh",
@@ -34,10 +47,18 @@ const CreateTips: React.FC = () => {
 
       <Card sx={{ width: "100%", maxWidth: 600, p: 3 }}>
         <CardContent sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-          <TextField label="Author" fullWidth value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <TextField
+            label="Author"
+            fullWidth
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+          />
           <FormControl fullWidth>
             <InputLabel>Category</InputLabel>
-            <Select value={category} onChange={(e) => setCategory(e.target.value)}>
+            <Select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
               <MenuItem value="Dogs">Dogs</MenuItem>
               <MenuItem value="Cats">Cats</MenuItem>
               <MenuItem value="Parrots">Parrots</MenuItem>
@@ -45,11 +66,27 @@ const CreateTips: React.FC = () => {
               <MenuItem value="Rabbits">Rabbits</MenuItem>
             </Select>
           </FormControl>
-          <TextField label="Short Tip" fullWidth value={shortText} onChange={(e) => setShortText(e.target.value)} />
-          <TextField label="Full Tip" fullWidth multiline rows={4} value={fullText} onChange={(e) => setFullText(e.target.value)} />
+          <TextField
+            label="Short Tip"
+            fullWidth
+            value={shortText}
+            onChange={(e) => setShortText(e.target.value)}
+          />
+          <TextField
+            label="Full Tip"
+            fullWidth
+            multiline
+            rows={4}
+            value={fullText}
+            onChange={(e) => setFullText(e.target.value)}
+          />
           <Button
             variant="contained"
-            sx={{ backgroundColor: "#FF6F61", "&:hover": { backgroundColor: "#E55A50" }, borderRadius: 2 }}
+            sx={{
+              backgroundColor: "#FF6F61",
+              "&:hover": { backgroundColor: "#E55A50" },
+              borderRadius: 2,
+            }}
             onClick={handleSubmit}
           >
             Submit Tip

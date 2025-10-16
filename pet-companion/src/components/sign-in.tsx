@@ -11,7 +11,7 @@ const validationSchema = yup.object().shape({
 });
 
 // Rename the interface to avoit I prefix
-interface IFormData {
+interface FormData {
   username: string;
   password: string;
 }
@@ -21,13 +21,13 @@ const SignInPage = () => {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<IFormData>({
+  } = useForm<FormData>({
     resolver: yupResolver(validationSchema),
   });
 
   const { login } = useAuth();
 
-  const onSubmit = (data: IFormData) => {
+  const onSubmit = (data: FormData) => {
     const success = login(data.username, data.password);
     if (!success) {
       alert("✖ Wrong username or password");

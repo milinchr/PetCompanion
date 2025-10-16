@@ -10,6 +10,7 @@ import {
 import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useAuth } from "../components/auth-context";
+import { usePosts } from "./post-context";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -24,7 +25,8 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 const CreatePost: React.FC = () => {
-  const { user, updateUser, addPost } = useAuth();
+  const { user, updateUser} = useAuth();
+  const { addPost } = usePosts();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState<string | null>(null);

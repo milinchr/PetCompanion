@@ -9,6 +9,7 @@ import hamster from "../images/pets/hamster.png";
 import parrot from "../images/pets/parrot.png";
 import rabbit from "../images/pets/rabbit.png";
 import { useParams } from "react-router-dom";
+import { usePosts } from "./post-context";
 
 const pets: Record<string, { name: string; image: string }> = {
   cat: { name: "Cat", image: cat },
@@ -19,15 +20,21 @@ const pets: Record<string, { name: string; image: string }> = {
 };
 
 const ProfilePage = () => {
-  const { username } = useParams();
-  const { posts } = useAuth();
+  const { username } = useParams<{ username: string }>();
+  const { posts } = usePosts();
   const { user } = useAuth();
 
-  const profileUser = user && user.username === username ? user : null;
+  if (!username) return <p>User not found</p>;
+
+  const profileUser =
+    user && user.username === username
+      ? user
+      : JSON.parse(localStorage.getItem(username) || "null");
 
   if (!profileUser) return <p>User not found</p>;
 
-  const pet = pets[profileUser.petType] ?? pets["cat"]; // Why cat is default?
+
+  const pet = pets[profileUser.petType];
   const userPosts = posts.filter((p) => p.username === profileUser.username);
 
   const getProgressWidth = (xp: number) => `${(xp / 20) * 100}%`; // I noticed it's used in multiple places. Consider moving this to a utility file
@@ -121,7 +128,6 @@ const ProfilePage = () => {
               content={post.content}
               photo={post.photo}
               likes={post.likes}
-              petType={post.petType}
             />
           ))
         )}

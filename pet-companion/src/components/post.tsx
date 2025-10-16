@@ -20,7 +20,7 @@ interface IPost {
   petType: string;
 }
 
-interface IPost {
+interface PostProps {
   // Rename to PostProps since this defines component props, not data structure
   id: string;
   title: string;
@@ -28,7 +28,6 @@ interface IPost {
   content: string;
   photo?: string;
   likes?: number;
-  petType: string; // This prop is never used in the component - remove if not needed
 }
 
 const Post = ({
@@ -38,8 +37,7 @@ const Post = ({
   content,
   photo,
   likes = 0,
-  petType, // Remove if not needed
-}: IPost) => {
+}: PostProps) => {
   const { user, updateUser } = useAuth();
 
   const [likeCounter, setLikeCounter] = useState(likes);

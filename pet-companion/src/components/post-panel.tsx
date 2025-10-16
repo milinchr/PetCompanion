@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useAuth } from "../components/auth-context";
 import Post from "./post";
+import { usePosts } from "./post-context";
 
 const PostPanel = () => {
-  const { posts } = useAuth();
-  // Remove if unused
-  const { user } = useAuth();
+  const { posts } = usePosts();
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 3;
 
@@ -31,7 +29,6 @@ const PostPanel = () => {
           content={post.content}
           photo={post.photo}
           likes={post.likes}
-          petType={post.petType}
         />
       ))}
 

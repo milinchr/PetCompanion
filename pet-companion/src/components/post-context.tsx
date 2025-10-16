@@ -1,0 +1,89 @@
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import post1 from "../uploads/murka-sleepy.jpg";
+import post2 from "../uploads/angry-cat.jpg";
+
+export interface PostData {
+  id: string;
+  title: string;
+  username: string;
+  content: string;
+  photo?: string;
+  likes: number;
+  petType: string;
+}
+
+interface PostContextType {
+  posts: PostData[];
+  addPost: (newPost: PostData) => void;
+  likePost: (id: string) => void;
+}
+
+const PostContext = createContext<PostContextType | undefined>(undefined);
+
+const defaultPosts: PostData[] = [
+  {
+    id: "p1",
+    title: "Murka",
+    username: "user1",
+    content: "Murka is sleepy again <3",
+    photo: post1,
+    likes: 0,
+    petType: "cat",
+  },
+  {
+    id: "p2",
+    title: "Angry Bella",
+    username: "user2",
+    content:
+      "Meet Bella, the grumpy queen of the house. I caught her mid-scowl because she wasn’t in the mood for cuddles—sometimes her attitude is just too photogenic to resist!",
+    photo: post2,
+    likes: 0,
+    petType: "cat",
+  },
+];
+
+export const PostProvider = ({ children }: { children: ReactNode }) => {
+  const [posts, setPosts] = useState<PostData[]>([]);
+
+  useEffect(() => {
+    const savedPosts = localStorage.getItem("posts");
+    let currentPosts: PostData[] = savedPosts ? JSON.parse(savedPosts) : [];
+
+    const existingIds = new Set(currentPosts.map((p) => p.id));
+    const newDefaultPosts = defaultPosts.filter((p) => !existingIds.has(p.id));
+
+    if (newDefaultPosts.length > 0) {
+      currentPosts = [...newDefaultPosts, ...currentPosts];
+      localStorage.setItem("posts", JSON.stringify(currentPosts));
+    }
+
+    setPosts(currentPosts);
+  }, []);
+
+  const addPost = (newPost: PostData) => {
+    const updated = [newPost, ...posts];
+    setPosts(updated);
+    localStorage.setItem("posts", JSON.stringify(updated));
+  };
+
+  const likePost = (id: string) => {
+    const updated = posts.map((p) =>
+      p.id === id ? { ...p, likes: p.likes + 1 } : p
+    );
+    setPosts(updated);
+    localStorage.setItem("posts", JSON.stringify(updated));
+  };
+
+  return (
+    <PostContext.Provider value={{ posts, addPost, likePost }}>
+      {children}
+    </PostContext.Provider>
+  );
+};
+
+
+export const usePosts = () => {
+  const context = useContext(PostContext);
+  if (!context) throw new Error("usePosts must be used within PostProvider");
+  return context;
+};

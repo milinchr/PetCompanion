@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; // Remove unused import
 import Rating from "@mui/material/Rating";
 
 type StarRatingProps = {
@@ -17,4 +17,3 @@ export default function StarRating({ value, onChange }: StarRatingProps) {
     </div>
   );
 }
-

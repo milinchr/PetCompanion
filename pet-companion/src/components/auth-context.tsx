@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import post1 from "../uploads/murka-sleepy.jpg";
 import post2 from "../uploads/angry-cat.jpg";
 
@@ -15,6 +21,8 @@ interface UserData {
   xp: number;
 }
 
+// I would separate this into its own file for better organization
+// The current file is named auth-context.tsx, so it makes sense to not keep PostData interface here
 interface PostData {
   id: string;
   title: string;
@@ -29,6 +37,7 @@ interface AuthContextType {
   isLoggedIn: boolean;
   user: UserData | null;
   posts: PostData[];
+  // Check if all these parameters marked as "?" can be optional
   login: (
     username: string,
     password: string,
@@ -37,7 +46,7 @@ interface AuthContextType {
     treat?: string,
     age?: string,
     color?: string,
-    eyes?: string,
+    eyes?: string
   ) => boolean;
   logout: () => void;
   updateUser: (updatedUser: UserData) => void;
@@ -72,6 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserData | null>(null);
   const [posts, setPosts] = useState<PostData[]>([]);
 
+  // Why setPosts is called here in this file?
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     const savedPosts = localStorage.getItem("posts");
@@ -82,9 +92,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const existingIds = new Set(currentPosts.map((p) => p.id));
 
-    const newDefaultPosts = defaultPosts.filter(
-      (p) => !existingIds.has(p.id)
-    );
+    const newDefaultPosts = defaultPosts.filter((p) => !existingIds.has(p.id));
 
     if (newDefaultPosts.length > 0) {
       currentPosts = [...newDefaultPosts, ...currentPosts];
@@ -102,7 +110,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     treat?: string,
     age?: string,
     color?: string,
-    eyes?: string,
+    eyes?: string
   ): boolean => {
     const savedUser = localStorage.getItem(username);
 
@@ -146,6 +154,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem(updatedUser.username, JSON.stringify(updatedUser));
   };
 
+  // All post management functions should be in a separate file
   const addPost = (newPost: PostData) => {
     const updatedPosts = [newPost, ...posts];
     setPosts(updatedPosts);
@@ -169,6 +178,43 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+/* (!) NOT AN ERROR, JUST AN IMPROVEMENT SUGGESTION
+
+If some component uses useAuth() outside <AuthProvider>, that throw happens during render.
+
+- no Error Boundary: whole tree can crash -> white screen in prod.
+
+- with Error Boundary: users see your friendly fallback instead. 
+
+   What’s an error boundary?
+   It’s a special React wrapper that catches runtime errors in everything inside it.
+
+- without it: an error during render can crash the whole app -> blank/white screen.
+
+- with it: you show a fallback UI instead of crashing.
+
+  What’s a fallback?
+
+the little UI you show when something breaks.
+
+e.g. “Something went wrong. Refresh?” + a button.
+
+Suggestion: use react-error-boundary.
+
+import { ErrorBoundary } from "react-error-boundary";
+
+function Fallback() {
+  return <div>Oops. Something broke. Try refresh or go Home.</div>;
+}
+
+root.render(
+  <ErrorBoundary FallbackComponent={Fallback}>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </ErrorBoundary>
+);
+*/
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth must be used within AuthProvider");

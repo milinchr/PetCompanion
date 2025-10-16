@@ -53,6 +53,11 @@ const NavigationBar = () => {
                   Care Tips
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link className={getNavLinkClass("/create-tips")} to="/create-tips">
+                  Create Tips
+                </Link>
+              </li>
             </ul>
 
             {isLoggedIn && (

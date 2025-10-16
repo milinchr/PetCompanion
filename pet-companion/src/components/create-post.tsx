@@ -87,7 +87,7 @@ const CreatePost: React.FC = () => {
         padding: 3,
         backgroundColor: "#FFFDF7",
         backgroundImage:
-          "url('https://images7.alphacoders.com/126/thumb-1920-1269810.jpg')",
+          "url('https://storage.googleapis.com/msgsndr/gDKzRZmTY6fv5zKWsmuv/media/64a223846abe089f523e8318.png')",
         backgroundRepeat: "no-repeat",
         // backgroundSize: "auto", Change the size here if needed
         backgroundAttachment: "fixed",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState , useEffect} from "react";
 import {
   Card,
   CardContent,
@@ -148,20 +148,19 @@ export default function Tips() {
   const [ratings, setRatings] = useState<{ [key: number]: number | null }>({});
   const [category, setCategory] = useState("");
   const [showFilter, setShowFilter] = useState(false);
+  const [allTips, setAllTips] = useState<Tip[]>([]);
+  const [expanded, setExpanded] = useState<number | null>(null);
+
+  useEffect(() => {
+    // Load tips from localStorage
+    const storedTips = JSON.parse(localStorage.getItem("customTips") || "[]");
+    setAllTips([...tips, ...storedTips]); // combine static + custom
+  }, []);
 
   const handleRatingChange = (id: number, value: number | null) => {
     setRatings((prev) => ({ ...prev, [id]: value }));
   };
 
-  // Delete if not used
-  const calculateAverage = (values: number[]) => {
-    if (!values.length) return 0;
-    const total = values.reduce((sum, val) => sum + val, 0);
-    return (total / values.length).toFixed(1);
-  };
-
-  // Move to the top where all the consts are defined
-  const [expanded, setExpanded] = useState<number | null>(null);
 
   const handleToggle = (id: number) => {
     setExpanded(expanded === id ? null : id);
@@ -172,8 +171,8 @@ export default function Tips() {
   };
 
   const filteredTips = category
-    ? tips.filter((tip) => tip.category === category)
-    : tips;
+    ? allTips.filter((tip) => tip.category === category)
+  : allTips;
 
   const settings = {
     dots: true,
@@ -259,84 +258,115 @@ export default function Tips() {
       </Typography>
 
       <Box
-        // Move to CSS or use styled-components
-        sx={{
-          width: "90%",
-          maxWidth: "1600px",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Slider {...settings}>
-          {filteredTips.map((tip) => (
-            <Box key={tip.id} sx={{ px: 2 }}>
-              <Card
-                // Move to CSS or use styled-components
+  sx={{
+    width: "90%",
+    maxWidth: "1600px",
+    justifyContent: "center",
+    alignItems: "center",
+  }}
+>
+  {filteredTips.length > 0 ? (
+    <Slider {...settings}>
+      {filteredTips.map((tip) => (
+        <Box key={tip.id} sx={{ px: 2 }}>
+          <Card
+            sx={{
+              borderRadius: 4,
+              p: 3,
+              height: 400,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              boxShadow: 5,
+              backgroundColor: "#fff",
+            }}
+          >
+            <CardContent sx={{ textAlign: "center" }}>
+              <Typography variant="h6" gutterBottom>
+                {tip.author}
+              </Typography>
+
+              <Chip
+                label={tip.category}
                 sx={{
-                  borderRadius: 4,
-                  p: 3,
-                  height: 400,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  boxShadow: 5,
-                  backgroundColor: "#fff",
+                  backgroundColor: "#828282",
+                  mb: 1,
+                  color: "white",
+                  fontWeight: 500,
                 }}
+                size="small"
+              />
+
+              <Box sx={{ my: 1 }}>
+                <StarRating
+                  value={ratings[tip.id] ?? 0}
+                  onChange={(value) => handleRatingChange(tip.id, value)}
+                />
+              </Box>
+
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mt: 2, mb: 2, px: 1 }}
               >
-                <CardContent sx={{ textAlign: "center" }}>
-                  <Typography variant="h6" gutterBottom>
-                    {tip.author}
-                  </Typography>
+                {expanded === tip.id ? tip.fullText : tip.shortText}
+              </Typography>
 
-                  <Chip
-                    label={tip.category}
-                    // Move to CSS or use styled-components
-                    sx={{
-                      backgroundColor: "#828282",
-                      mb: 1,
-                      color: "white",
-                      fontWeight: 500,
-                    }}
-                    size="small"
-                  />
+              <Button
+                variant="contained"
+                size="small"
+                sx={{
+                  mt: 1,
+                  borderRadius: 2,
+                  backgroundColor: "#FF6F61",
+                  textTransform: "none",
+                  "&:hover": { backgroundColor: "#ff5a4d" },
+                }}
+                onClick={() => handleToggle(tip.id)}
+              >
+                {expanded === tip.id ? "See less" : "See more"}
+              </Button>
+            </CardContent>
+          </Card>
+        </Box>
+      ))}
+    </Slider>
+  ) : (
+    <Box
+      sx={{
+        textAlign: "center",
+        mt: 8,
+        backgroundColor: "rgba(255,255,255,0.8)",
+        p: 4,
+        borderRadius: 4,
+        boxShadow: 3,
+      }}
+    >
+      <Typography variant="h6" sx={{ mb: 2, color: "#555" }}>
+      No tips found for this category.
+      </Typography>
 
-                  <Box sx={{ my: 1 }}>
-                    <StarRating
-                      value={ratings[tip.id] ?? 0}
-                      onChange={(value) => handleRatingChange(tip.id, value)}
-                    />
-                  </Box>
-
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mt: 2, mb: 2, px: 1 }}
-                  >
-                    {expanded === tip.id ? tip.fullText : tip.shortText}
-                  </Typography>
-
-                  <Button
-                    variant="contained"
-                    size="small"
-                    // Move to CSS or use styled-components
-                    sx={{
-                      mt: 1,
-                      borderRadius: 2,
-                      backgroundColor: "#FF6F61",
-                      textTransform: "none",
-                      "&:hover": { backgroundColor: "#ff5a4d" },
-                    }}
-                    onClick={() => handleToggle(tip.id)}
-                  >
-                    {expanded === tip.id ? "See less" : "See more"}
-                  </Button>
-                </CardContent>
-              </Card>
-            </Box>
-          ))}
-        </Slider>
+      <Typography variant="body1" sx={{ color: "#777" }}>
+      Be the first to share your knowledge and{" "}
+      <Typography
+        component="span"
+         sx={{
+        color: "#FF6F61",
+        textDecoration: "underline",
+        cursor: "pointer",
+        fontWeight: "bold",
+        "&:hover": { color: "#E55A50" },
+        }}
+        onClick={() => navigate("/create-tips")}>
+        create one here
+        </Typography>
+        .
+        </Typography>
       </Box>
+        )}
+    </Box>
+
       <Add onClick={handleAddClick} />
     </Box>
   );

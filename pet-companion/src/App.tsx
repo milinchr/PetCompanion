@@ -38,6 +38,7 @@ function AppRoutes() {
         element={isLoggedIn ? <CreateTips /> : <Navigate to="/sign-in" replace />}
       />
       <Route path="/profile/:username" element={<ProfilePage />} />
+      <Route path="/create-tips" element={<CreateTips />} />
     </Routes>
   );
 }

@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 import post1 from "../uploads/murka-sleepy.jpg";
 import post2 from "../uploads/angry-cat.jpg";
 
@@ -14,8 +20,10 @@ export interface PostData {
 
 interface PostContextType {
   posts: PostData[];
+  skippedPosts: PostData[];
   addPost: (newPost: PostData) => void;
   likePost: (id: string) => void;
+  skipPost: (id: string, username: string) => void;
 }
 
 const PostContext = createContext<PostContextType | undefined>(undefined);
@@ -44,6 +52,7 @@ const defaultPosts: PostData[] = [
 
 export const PostProvider = ({ children }: { children: ReactNode }) => {
   const [posts, setPosts] = useState<PostData[]>([]);
+  const [skippedPosts, setSkippedPosts] = useState<PostData[]>([]);
 
   useEffect(() => {
     const savedPosts = localStorage.getItem("posts");
@@ -74,13 +83,39 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("posts", JSON.stringify(updated));
   };
 
+  const skipPost = (id: string, username: string) => {
+    try {
+      const skippedPosts = JSON.parse(
+        localStorage.getItem(`${username}-skipped`) || "[]"
+      );
+
+      if (!skippedPosts.includes(id)) {
+        skippedPosts.push(id);
+        localStorage.setItem(
+          `${username}-skipped`,
+          JSON.stringify(skippedPosts)
+        );
+        setSkippedPosts(skippedPosts);
+      }
+    } catch (error) {
+      console.error("Error skipping post:", error);
+    }
+  };
+
   return (
-    <PostContext.Provider value={{ posts, addPost, likePost }}>
+    <PostContext.Provider
+      value={{
+        posts,
+        skippedPosts,
+        addPost,
+        likePost,
+        skipPost,
+      }}
+    >
       {children}
     </PostContext.Provider>
   );
 };
-
 
 export const usePosts = () => {
   const context = useContext(PostContext);

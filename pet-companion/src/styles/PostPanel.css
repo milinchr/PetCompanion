@@ -1,0 +1,49 @@
+
+.pp-container {
+  margin-bottom: 48px; /* пространство под пагинацией */
+  padding: 0 12px;
+}
+
+.pp-title {
+  text-align: left;
+  margin: 0 0 12px 0;
+  font-size: 1.4rem;
+}
+
+.pp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Пагинация */
+.pp-pagination {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pp-page-btn,
+.pp-page-num {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  min-width: 40px;
+}
+
+.pp-page-btn[disabled],
+.pp-page-num[disabled] {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Активная страница — легкий серый бэк, без ярких цветов */
+.pp-page-num.active {
+  background: #f4f4f4;
+  font-weight: 600;
+  border-color: #ccc;
+}

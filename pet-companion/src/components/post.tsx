@@ -1,33 +1,16 @@
-// Remove unused import import React from "react";
 import { useState, useEffect } from "react";
 import pawsImg from "../assets/paw-likes.png";
 import { useAuth } from "../components/auth-context";
 import { useNavigate } from "react-router-dom";
 
-// Usually in TS interfaces are not named with I prefix
-// https://ts.dev/style/#naming-style
-/* Do not mark interfaces specially (IMyInterface or MyFooInterface) unless it's idiomatic in its environment.
- When introducing an interface for a class, give it a name that expresses why the interface exists
-in the first place (e.g. class TodoItem and interface TodoItemStorage
-if the interface expresses the format used for storage/serialization in JSON).*/
-interface IPost {
-  id: string;
-  title: string;
-  username: string;
-  content: string;
-  photo?: string;
-  likes?: number;
-  petType: string;
-}
-
 interface PostProps {
-  // Rename to PostProps since this defines component props, not data structure
   id: string;
   title: string;
   username: string;
   content: string;
   photo?: string;
   likes?: number;
+  onSkip?: () => void;
 }
 
 const Post = ({
@@ -37,6 +20,7 @@ const Post = ({
   content,
   photo,
   likes = 0,
+  onSkip,
 }: PostProps) => {
   const { user, updateUser } = useAuth();
 
@@ -112,6 +96,11 @@ const Post = ({
     }
   };
 
+  const handleSkipClick = () => {
+  handleSkip();
+  if (onSkip) onSkip();
+};
+
   if (!visible) return null;
 
   return (
@@ -184,7 +173,7 @@ const Post = ({
                   className="btn btn-secondary"
                   id="btn-skip" // Same ID uniqueness problem - use id={`btn-skip-${id}`}
                   type="button"
-                  onClick={handleSkip}
+                  onClick={handleSkipClick}
                 >
                   Skip
                 </button>

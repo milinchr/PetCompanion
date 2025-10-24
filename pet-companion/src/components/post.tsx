@@ -11,6 +11,7 @@ interface PostProps {
   content: string;
   photo?: string;
   likes?: number;
+  onSkip?: () => void;
 }
 
 const Post = ({
@@ -20,6 +21,7 @@ const Post = ({
   content,
   photo,
   likes = 0,
+  onSkip,
 }: PostProps) => {
   const { user, updateUser } = useAuth();
   const { skipPost } = usePosts();
@@ -136,7 +138,7 @@ const Post = ({
                   className="btn btn-secondary"
                   id="btn-skip" // Same ID uniqueness problem - use id={`btn-skip-${id}`}
                   type="button"
-                  onClick={handleSkip}
+                  onClick={handleSkipClick}
                 >
                   Skip
                 </button>

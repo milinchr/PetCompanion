@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import pawsImg from "../assets/paw-likes.png";
 import { useAuth } from "../components/auth-context";
 import { useNavigate } from "react-router-dom";
+import { usePosts } from "./post-context";
 
 interface PostProps {
   id: string;
@@ -23,6 +24,7 @@ const Post = ({
   onSkip,
 }: PostProps) => {
   const { user, updateUser } = useAuth();
+  const { skipPost } = usePosts();
 
   const [likeCounter, setLikeCounter] = useState(likes);
   const [liked, setLiked] = useState(false);
@@ -33,25 +35,6 @@ const Post = ({
   const handleUsernameClick = () => {
     navigate(`/profile/${username}`);
   };
-  const [visible, setVisible] = useState(true);
-
-  useEffect(() => {
-    const storedLikes = JSON.parse(localStorage.getItem("postLikes") || "{}");
-    if (storedLikes[id]) {
-      setLikeCounter(storedLikes[id]);
-    }
-
-    if (user) {
-      const likedPosts = JSON.parse(
-        localStorage.getItem(`${user.username}-likes`) || "[]"
-      );
-      if (likedPosts.includes(id)) setLiked(true);
-      const skippedPosts = JSON.parse(
-        localStorage.getItem(`${user.username}-skipped`) || "[]"
-      );
-      if (skippedPosts.includes(id)) setVisible(false);
-    }
-  }, [id, user]);
 
   const handleLike = () => {
     if (!user || isOwner) return;
@@ -82,26 +65,8 @@ const Post = ({
 
   const handleSkip = () => {
     if (!user) return;
-    setVisible(false);
-    const skippedPosts = JSON.parse(
-      // ERROR HANDLING: JSON.parse can throw error
-      localStorage.getItem(`${user.username}-skipped`) || "[]"
-    );
-    if (!skippedPosts.includes(id)) {
-      skippedPosts.push(id);
-      localStorage.setItem(
-        `${user.username}-skipped`,
-        JSON.stringify(skippedPosts)
-      );
-    }
+    skipPost(id, user.username);
   };
-
-  const handleSkipClick = () => {
-  handleSkip();
-  if (onSkip) onSkip();
-};
-
-  if (!visible) return null;
 
   return (
     <div

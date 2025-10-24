@@ -1,21 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Post from "./post";
 import { usePosts } from "./post-context";
 
 const PostPanel = () => {
-  const { posts } = usePosts();
+  const { posts, skippedPosts } = usePosts();
+
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 3;
 
+  const skippedIds = skippedPosts.map((post) =>
+    typeof post === "object" ? post.id : post
+  );
+
+  const userPosts = posts.filter((post) => !skippedIds.includes(post.id));
+
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-  const totalPages = Math.ceil(posts.length / postsPerPage);
+  const currentPosts = userPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const totalPages = Math.ceil(userPosts.length / postsPerPage);
 
   const goToPage = (page: number) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };
+
+  useEffect(() => {
+    if (currentPosts.length === 0 && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }, [currentPosts, currentPage]);
 
   return (
     <div>

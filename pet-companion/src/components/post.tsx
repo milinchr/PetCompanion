@@ -75,21 +75,25 @@ const Post = ({
     >
       <div className="row g-0">
         {photo && (
-          <div style={{ width: 200, height: "100%" }}>
-            {/*  Move to CSS */}
-            <img
-              src={photo}
-              alt={title}
-              style={{
-                // Move to CSS
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                borderRadius: "0.25rem 0 0 0.25rem",
-              }}
-            />
-          </div>
-        )}
+    <div
+      style={{
+        flex: "0 0 200px",     // ✅ фиксированная ширина, но высота — автоматическая
+        overflow: "hidden",    // ✅ предотвращает вылезание фото
+        borderRadius: "0.25rem 0 0 0.25rem",
+      }}
+    >
+      <img
+        src={photo}
+        alt={title}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",  // ✅ фото заполняет всё место
+          display: "block",
+        }}
+      />
+    </div>
+  )}
         <div
           className={
             photo ? "col-md-8 d-flex flex-column" : "col-12 d-flex flex-column" // These styles are better moved to a separate const instead of magic strings
@@ -138,7 +142,7 @@ const Post = ({
                   className="btn btn-secondary"
                   id="btn-skip" // Same ID uniqueness problem - use id={`btn-skip-${id}`}
                   type="button"
-                  onClick={handleSkipClick}
+                  onClick={handleSkip}
                 >
                   Skip
                 </button>

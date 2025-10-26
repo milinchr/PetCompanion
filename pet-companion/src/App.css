@@ -137,3 +137,16 @@ button {
   gap: 10px;
 }
 
+.card .row.g-0 {
+  display: flex;
+  align-items: stretch; /* Растягивает изображение и текстовую часть одинаково */
+}
+.card .row.g-0 > div {
+  display: flex;
+  flex-direction: column;
+}
+.card img {
+  height: 100%;
+  object-fit: cover;
+}
+

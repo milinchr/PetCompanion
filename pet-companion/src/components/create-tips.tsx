@@ -13,6 +13,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import "../styles/createtips.css"
 
 const CreateTips: React.FC = () => {
   const navigate = useNavigate();
@@ -44,30 +45,14 @@ const CreateTips: React.FC = () => {
 
 };
 
-  return (
-    // Same comment as in create-post.tsx about moving styles to a separate file or using styled-components
-    <Box
-      sx={{
-        minHeight: "94vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 3,
-        
-        backgroundImage:
-          "url('https://i.pinimg.com/1200x/f8/67/17/f8671702de24c45fd3fd9347b8c92938.jpg')",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "100%",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      <Typography variant="h4" sx={{ mb: 4, fontWeight: "bold" }}>
+return (
+    <Box className="create-tips-page">
+      <Typography variant="h4" className="create-tips-title">
         <h1>✏️ Create a New Tip</h1>
       </Typography>
 
-      <Card sx={{ width: "100%", maxWidth: 600, p: 3 }}>
-        <CardContent sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+      <Card className="create-tips-card">
+        <CardContent className="create-tips-card-content">
           <TextField
             label="Author"
             fullWidth
@@ -87,6 +72,7 @@ const CreateTips: React.FC = () => {
               <MenuItem value="Rabbits">Rabbits</MenuItem>
             </Select>
           </FormControl>
+
           <TextField
             label="Short Tip"
             fullWidth
@@ -101,14 +87,11 @@ const CreateTips: React.FC = () => {
             value={fullText}
             onChange={(e) => setFullText(e.target.value)}
           />
+
           <Button
             variant="contained"
-            sx={{
-              backgroundColor: "#FF6F61",
-              "&:hover": { backgroundColor: "#E55A50" },
-              borderRadius: 2,
-            }}
             onClick={handleSubmit}
+            className="submit-tip-btn"
           >
             Submit Tip
           </Button>

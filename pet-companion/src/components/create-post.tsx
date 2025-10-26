@@ -11,6 +11,7 @@ import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useAuth } from "../components/auth-context";
 import { usePosts } from "./post-context";
+import "../styles/createpost.css"
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -76,35 +77,13 @@ const CreatePost: React.FC = () => {
   };
 
   return (
-    <Box
-      // I would move the styles to a separate css file or use styled-component
-      sx={{
-        minHeight: "93vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 3,
-        backgroundColor: "#FFFDF7",
-        backgroundImage:
-          "url('https://i.pinimg.com/736x/29/f0/06/29f006cf26902cec787d3a218e64b239.jpg')",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "100%",
-        backgroundAttachment: "fixed",
-        pt: 4,
-      }}
-    >
-      <Typography
-        variant="h4"
-        component="h1"
-        gutterBottom
-        sx={{ textAlign: "center", marginBottom: 4, width: "100%" }}
-      >
+    <Box className="create-post-page">
+      <Typography variant="h4" component="h1" gutterBottom className="create-post-title">
         <h1>Create a New Post</h1>
       </Typography>
 
-      <Card sx={{ width: "100%", maxWidth: 600, p: 3, mb: 4 }}>
-        <CardContent sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+      <Card className="create-post-card">
+        <CardContent className="create-post-card-content">
           <TextField
             label="Title"
             fullWidth
@@ -124,15 +103,7 @@ const CreatePost: React.FC = () => {
             component="label"
             variant="outlined"
             startIcon={<CloudUploadIcon />}
-            sx={{
-              color: "#828282",
-              borderColor: "#828282",
-              "&:hover": {
-                backgroundColor: "#828282",
-                color: "white",
-                borderColor: "#828282",
-              },
-            }}
+            className="upload-btn"
           >
             Upload Image
             <VisuallyHiddenInput
@@ -145,25 +116,11 @@ const CreatePost: React.FC = () => {
 
           {image && (
             <Box sx={{ textAlign: "center" }}>
-              <img
-                src={image}
-                alt="Preview"
-                style={{ maxWidth: "100%", maxHeight: 200, borderRadius: 8 }}
-              />
+              <img src={image} alt="Preview" className="preview-img" />
             </Box>
           )}
 
-          {/* It's a good practice to store color hex codes in a theme or constants file for easier maintenance */}
-          <Button
-            variant="contained"
-            onClick={handleSubmit}
-            sx={{
-              fontWeight: "bold",
-              borderRadius: 2,
-              backgroundColor: "#FF6F61",
-              "&:hover": { backgroundColor: "#E55A50" },
-            }}
-          >
+          <Button variant="contained" onClick={handleSubmit} className="submit-btn">
             Create Post
           </Button>
         </CardContent>

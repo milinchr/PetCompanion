@@ -213,7 +213,7 @@ export default function Tips() {
         flexDirection: "column",
         textAlign: "center",
         backgroundImage:
-          "url('https://i.pinimg.com/736x/49/44/03/4944038dc09d49b3e0bff01e489ec68f.jpg')",
+          "url('https://i.pinimg.com/736x/c3/e3/be/c3e3beab1eea6d3d65a7254e317cdc27.jpg')",
         backgroundRepeat: "no-repeat",
         backgroundSize: "100%",
         backgroundAttachment: "fixed",

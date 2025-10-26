@@ -10,6 +10,7 @@ import parrot from "../images/pets/parrot.png";
 import rabbit from "../images/pets/rabbit.png";
 import { useParams } from "react-router-dom";
 import { usePosts } from "./post-context";
+import "../styles/profile.css"
 
 const pets: Record<string, { name: string; image: string }> = {
   cat: { name: "Cat", image: cat },
@@ -40,40 +41,13 @@ const ProfilePage = () => {
   const getProgressWidth = (xp: number) => `${(xp / 20) * 100}%`; // I noticed it's used in multiple places. Consider moving this to a utility file
 
   return (
-    <Box
-      // Move to CSS or use styled-components
-      sx={{
-        padding: 4,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <Card
-        // Move to CSS or use styled-components
-        sx={{
-          width: "600px",
-          borderRadius: 3,
-          p: 3,
-          mb: 4,
-          backgroundColor: "#FFFDF7",
-        }}
-      >
-        <CardContent
-          // Move to CSS or use styled-components
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 2,
-          }}
-        >
+    <Box className="profile-page">
+      <Card className="profile-card">
+        <CardContent className="profile-card-content">
           <img
             src={pet.image}
             alt={pet.name}
-            width={200}
-            height={200}
-            style={{ borderRadius: 12 }}
+            className="profile-pet-image"
           />
           <Typography variant="h4">{profileUser.petName}</Typography>
           <Typography variant="subtitle1">@{profileUser.username}</Typography>
@@ -81,41 +55,21 @@ const ProfilePage = () => {
           <Typography>
             Level: {profileUser.level} (XP: {profileUser.xp})
           </Typography>
-          <Box
-            // Move to CSS or use styled-components
-            sx={{
-              width: "100%",
-              backgroundColor: "#e0e0e0",
-              borderRadius: 2,
-              height: 10,
-            }}
-          >
+
+          <Box className="xp-bar">
             <Box
-              // Move to CSS or use styled-components
-              sx={{
-                width: getProgressWidth(profileUser.xp),
-                backgroundColor: "#56CCF2",
-                height: "100%",
-                borderRadius: 2,
-              }}
+              className="xp-progress"
+              style={{ width: getProgressWidth(profileUser.xp) }}
             />
           </Box>
         </CardContent>
       </Card>
 
-      <Box
-        // Move to CSS or use styled-components
-        sx={{
-          width: "100%",
-          maxWidth: 1050,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-        }}
-      >
-        <Typography variant="h5" sx={{ mb: 2 }}>
+      <Box className="profile-posts-section">
+        <Typography variant="h5" className="profile-posts-title">
           Posts by @{profileUser.username}
         </Typography>
+
         {userPosts.length === 0 ? (
           <Typography>No posts yet.</Typography>
         ) : (

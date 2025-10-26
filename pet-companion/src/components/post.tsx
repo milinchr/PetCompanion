@@ -26,8 +26,15 @@ const Post = ({
   const { user, updateUser } = useAuth();
   const { skipPost } = usePosts();
 
-  const [likeCounter, setLikeCounter] = useState(likes);
-  const [liked, setLiked] = useState(false);
+  const [likeCounter, setLikeCounter] = useState(() => {
+    const storedLikes = JSON.parse(localStorage.getItem("postLikes") || "{}");
+    return storedLikes[id] ?? likes;
+  });
+  const [liked, setLiked] = useState(() => {
+    if (!user) return false;
+    const likedPosts = JSON.parse(localStorage.getItem(`${user.username}-likes`) || "[]");
+    return likedPosts.includes(id);
+  });
 
   const navigate = useNavigate();
 

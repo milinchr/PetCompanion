@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Post from "./post";
+import "../styles/PostPanel.css";
 import { usePosts } from "./post-context";
 
 const PostPanel = () => {
@@ -46,61 +47,33 @@ const PostPanel = () => {
       ))}
 
       {totalPages > 1 && (
-        <div style={{ marginTop: 20, textAlign: "center" }}>
-          <button
-            onClick={() => goToPage(currentPage - 1)}
-            disabled={currentPage === 1}
-            // Same comment about styles - consider moving to CSS or use styled-components
-            style={{
-              marginRight: 8,
-              fontWeight: "bold",
-              borderRadius: 8,
-              backgroundColor: "#E55A50",
-              color: "white",
-              padding: "6px 12px",
-              border: "none",
-              cursor: currentPage === totalPages ? "not-allowed" : "pointer",
-            }}
-          >
-            Previous
+  <nav>
+    <ul className="pagination justify-content-center mt-4">
+      <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+        <button className="page-link" onClick={() => goToPage(currentPage - 1)}>
+          ◂
+        </button>
+      </li>
+
+      {Array.from({ length: totalPages }, (_, i) => (
+        <li
+          key={i + 1}
+          className={`page-item ${currentPage === i + 1 ? "active" : ""}`}
+        >
+          <button className="page-link" onClick={() => goToPage(i + 1)}>
+            {i + 1}
           </button>
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i + 1}
-              onClick={() => goToPage(i + 1)}
-              // Same comment about styles - consider moving to CSS or use styled-components
-              style={{
-                margin: "0 4px",
-                fontWeight: currentPage === i + 1 ? "bold" : "normal",
-                borderRadius: 8,
-                backgroundColor: "#ff6e6198",
-                color: "white",
-                padding: "6px 12px",
-                border: "none",
-              }}
-            >
-              {i + 1}
-            </button>
-          ))}
-          <button
-            onClick={() => goToPage(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            // Same comment about styles - consider moving to CSS or use styled-components
-            style={{
-              marginLeft: 8,
-              fontWeight: "bold",
-              borderRadius: 8,
-              backgroundColor: "#E55A50",
-              color: "white",
-              padding: "6px 12px",
-              border: "none",
-              cursor: currentPage === totalPages ? "not-allowed" : "pointer",
-            }}
-          >
-            Next
-          </button>
-        </div>
-      )}
+        </li>
+      ))}
+
+      <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+        <button className="page-link" onClick={() => goToPage(currentPage + 1)}>
+          ▸
+        </button>
+      </li>
+    </ul>
+  </nav>
+)}
     </div>
   );
 };

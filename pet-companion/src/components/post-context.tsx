@@ -52,7 +52,10 @@ const defaultPosts: PostData[] = [
 
 export const PostProvider = ({ children }: { children: ReactNode }) => {
   const [posts, setPosts] = useState<PostData[]>([]);
-  const [skippedPosts, setSkippedPosts] = useState<PostData[]>([]);
+  const [skippedPosts, setSkippedPosts] = useState<string[]>([]);
+
+  const userData = localStorage.getItem("user");
+  const username = userData ? JSON.parse(userData).username : null;
 
   useEffect(() => {
     const savedPosts = localStorage.getItem("posts");
@@ -67,7 +70,14 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
     }
 
     setPosts(currentPosts);
-  }, []);
+
+    if (username) {
+      const storedSkipped = JSON.parse(
+        localStorage.getItem(`${username}-skipped`) || "[]"
+      );
+      setSkippedPosts(storedSkipped);
+    }
+  }, [username]);
 
   const addPost = (newPost: PostData) => {
     const updated = [newPost, ...posts];
@@ -85,17 +95,13 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
 
   const skipPost = (id: string, username: string) => {
     try {
-      const skippedPosts = JSON.parse(
+      const skipped = JSON.parse(
         localStorage.getItem(`${username}-skipped`) || "[]"
       );
-
-      if (!skippedPosts.includes(id)) {
-        skippedPosts.push(id);
-        localStorage.setItem(
-          `${username}-skipped`,
-          JSON.stringify(skippedPosts)
-        );
-        setSkippedPosts(skippedPosts);
+      if (!skipped.includes(id)) {
+        skipped.push(id);
+        localStorage.setItem(`${username}-skipped`, JSON.stringify(skipped));
+        setSkippedPosts(skipped);
       }
     } catch (error) {
       console.error("Error skipping post:", error);
@@ -106,7 +112,7 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
     <PostContext.Provider
       value={{
         posts,
-        skippedPosts,
+        skippedPosts: skippedPosts.map((id) => posts.find((p) => p.id === id)).filter(Boolean) as PostData[],
         addPost,
         likePost,
         skipPost,

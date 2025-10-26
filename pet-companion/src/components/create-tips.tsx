@@ -56,9 +56,9 @@ const CreateTips: React.FC = () => {
         padding: 3,
         
         backgroundImage:
-          "url('https://images.squarespace-cdn.com/content/v1/6182af2cda7b3c78bcc21e3c/73eace97-2b66-450e-a25d-6f84bde43f13/pattern-bg-2.jpg')",
+          "url('https://i.pinimg.com/1200x/f8/67/17/f8671702de24c45fd3fd9347b8c92938.jpg')",
         backgroundRepeat: "no-repeat",
-        // backgroundSize: "auto", Change the size here if needed
+        backgroundSize: "100%",
         backgroundAttachment: "fixed",
       }}
     >

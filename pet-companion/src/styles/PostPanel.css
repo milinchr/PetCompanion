@@ -76,10 +76,10 @@
 }
 
 .page-item.active .page-link {
-  background-color: #FF6F61; /* коралловый цвет из кнопок #btn-login */
+  background-color: #FF6F61;
   color: white;
   font-weight: 500;
-  box-shadow: 0 2px 6px rgba(255, 111, 97, 0.4); /* лёгкая коралловая тень */
+  box-shadow: 0 2px 6px rgba(255, 111, 97, 0.4);
 }
 .page-item.disabled .page-link {
   opacity: 0.5;

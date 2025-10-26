@@ -1,5 +1,5 @@
 import React from "react";
-import { useAuth } from "../components/auth-context";
+/*import { useAuth } from "../components/auth-context";
 import { useParams } from "react-router-dom";
 import { usePosts } from "./post-context";
 import Post from "./post";
@@ -145,4 +145,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default ProfilePage;*/

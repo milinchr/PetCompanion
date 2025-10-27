@@ -53,12 +53,12 @@ button {
   align-self: flex-start;
 }
 
-.PetPanel .progress {
+.pet-panel .progress {
   width: 400px;
   top: 100px;
 }
 
-.PetPanel .progress-bar {
+.pet-panel .progress-bar {
   background-color: #56CCF2;
 }
 
@@ -67,16 +67,6 @@ button {
   gap: 40px;
   margin-top: 30px;
   align-items: flex-start;
-}
-
-.PostPanel {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-top: 30px;
-  max-width: 1050px;
-  margin: 30px auto;
-  text-align: left;
 }
 
 .card:hover {

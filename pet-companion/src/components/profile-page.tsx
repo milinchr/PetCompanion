@@ -28,18 +28,16 @@ const ProfilePage = () => {
   if (!username) return <p>User not found</p>;
 
   const profileUser =
-    user?.username === username
+    user && user.username === username
       ? user
       : JSON.parse(localStorage.getItem(username) || "null");
 
   if (!profileUser) return <p>User not found</p>;
 
-  if (!profileUser.petType || !pets[profileUser.petType]) {
-    profileUser.petType = "cat";
-  }
   const pet = pets[profileUser.petType];
   const userPosts = posts.filter((p) => p.username === profileUser.username);
-  const progressWidth = `${(profileUser.xp / 20) * 100}%`;
+
+  const getProgressWidth = (xp: number) => `${(xp / 20) * 100}%`;
 
   return (
   <div className="profile-page">
@@ -100,9 +98,16 @@ const ProfilePage = () => {
         </CardContent>
 
         <Box sx={{ mt: 3, width: "100%", display: "flex", flexDirection: "column", alignItems: "center", gap: 1 }}>
-          <div className="xp-bar">
-            <div className="xp-progress" style={{ width: progressWidth }}></div>
-          </div>
+          <Box sx={{ width: "40%", backgroundColor: "#e0e0e0", borderRadius: 2, height: 10 }}>
+            <Box 
+              sx={{ 
+                width: getProgressWidth(profileUser.xp), 
+                backgroundColor: "#56CCF2", 
+                height: "100%", 
+                borderRadius: 2 
+              }} 
+            />
+          </Box>
         </Box>
       </Card>
 

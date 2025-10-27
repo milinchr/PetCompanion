@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Post from "./post";
-import "../styles/PostPanel.css";
+import "../styles/post-panel.css";
 import { usePosts } from "./post-context";
 
 const PostPanel = () => {
@@ -32,7 +32,7 @@ const PostPanel = () => {
   }, [currentPosts, currentPage]);
 
   return (
-    <div>
+    <div className="post-panel">
       <h1 style={{ textAlign: "left" }}>Posts</h1>
       {currentPosts.map((post) => (
         <Post

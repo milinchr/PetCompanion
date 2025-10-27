@@ -10,7 +10,6 @@ const validationSchema = yup.object().shape({
   password: yup.string().required("Password is required"),
 });
 
-// Rename the interface to avoit I prefix
 interface FormData {
   username: string;
   password: string;
@@ -44,7 +43,6 @@ const SignInPage = () => {
           flexDirection="column"
           gap={2}
           width="450px"
-          // Move to CSS or use styled-components
           sx={{
             backgroundColor: "#FFFFFF",
             padding: 3,
@@ -93,8 +91,7 @@ const SignInPage = () => {
           />
 
           <button
-            className="btn btn-secondary"
-            id="btn-login"
+            className="btn btn-secondary btn-login"
             type="submit"
             style={{ width: "50%", alignSelf: "center" }}
           >

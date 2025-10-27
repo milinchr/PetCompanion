@@ -1,12 +1,15 @@
 .create-post-page {
-  min-height: 93vh;
+  min-height: 95vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 24px;
   background-color: #fffdf7;
-  background-image: url("https://i.pinimg.com/736x/29/f0/06/29f006cf26902cec787d3a218e64b239.jpg");
+  background-image: 
+    linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(0,0,0,0.2) 120%),
+    url("../assets/create-post-bg.jpg");
+  opacity: 0.8;
   background-repeat: no-repeat;
   background-size: 100%;
   background-attachment: fixed;

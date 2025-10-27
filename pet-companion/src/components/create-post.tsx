@@ -11,7 +11,8 @@ import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useAuth } from "../components/auth-context";
 import { usePosts } from "./post-context";
-import "../styles/createpost.css"
+import "../styles/createpost.css";
+import { useNavigate } from "react-router-dom";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -32,6 +33,7 @@ const CreatePost: React.FC = () => {
   const [content, setContent] = useState("");
   const [image, setImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -57,7 +59,6 @@ const CreatePost: React.FC = () => {
 
     addPost(newPost);
 
-    // I would separate this to a funtion and call it here to keep handleSubmit cleaner
     const xpToAdd = image ? 10 : 5;
     let newXP = user.xp + xpToAdd;
     let newLevel = user.level;
@@ -68,12 +69,12 @@ const CreatePost: React.FC = () => {
     }
 
     updateUser({ ...user, xp: newXP, level: newLevel });
-
-    // Redirect the user to the homepage instead of just clearing the form and remaining on the same page
+    
     setTitle("");
     setContent("");
     setImage(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
+    navigate("/");
   };
 
   return (

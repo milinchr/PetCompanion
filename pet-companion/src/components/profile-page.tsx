@@ -1,8 +1,9 @@
 import React from "react";
-/*import { useAuth } from "../components/auth-context";
+import { useAuth } from "../components/auth-context";
 import { useParams } from "react-router-dom";
 import { usePosts } from "./post-context";
 import Post from "./post";
+import "../styles/profile.css";
 import { Box, Typography, Card, CardContent } from "@mui/material";
 
 import cat from "../images/pets/cat.png";
@@ -10,8 +11,6 @@ import dog from "../images/pets/dog.png";
 import hamster from "../images/pets/hamster.png";
 import parrot from "../images/pets/parrot.png";
 import rabbit from "../images/pets/rabbit.png";
-import { useParams } from "react-router-dom";
-import { usePosts } from "./post-context";
 
 const pets: Record<string, { name: string; image: string }> = {
   cat: { name: "Cat", image: cat },
@@ -43,8 +42,8 @@ const ProfilePage = () => {
   const progressWidth = `${(profileUser.xp / 20) * 100}%`;
 
   return (
+  <div className="profile-page">
     <Box
-      // Move to CSS or use styled-components
       sx={{
         padding: 4,
         display: "flex",
@@ -53,78 +52,65 @@ const ProfilePage = () => {
       }}
     >
       <Card
-        // Move to CSS or use styled-components
+        className="profile-card"
         sx={{
-          width: "600px",
-          borderRadius: 3,
+          width: "100%",
+          maxWidth: 700,
           p: 3,
           mb: 4,
           backgroundColor: "#FFFDF7",
         }}
       >
+        <Box
+          className="profile-card-content"
+          sx={{ mb: 3 }}
+        >
+          <Typography variant="h4" fontWeight={600}>
+            {profileUser.petName}
+          </Typography>
+          <Typography variant="subtitle1" color="text.secondary">
+            @{profileUser.username}
+          </Typography>
+        </Box>
+
         <CardContent
-          // Move to CSS or use styled-components
           sx={{
             display: "flex",
-            flexDirection: "column",
+            justifyContent: "center",
             alignItems: "center",
+            flexWrap: "wrap",
             gap: 2,
           }}
         >
-          <img
-            src={pet.image}
-            alt={pet.name}
-            width={200}
-            height={200}
-            style={{ borderRadius: 12 }}
-          />
-          <Typography variant="h4">{profileUser.petName}</Typography>
-          <Typography variant="subtitle1">@{profileUser.username}</Typography>
-          <Typography>Pet Type: {pet.name}</Typography>
-          <Typography>
-            Level: {profileUser.level} (XP: {profileUser.xp})
-          </Typography>
-          <Box
-            // Move to CSS or use styled-components
-            sx={{
-              width: "100%",
-              backgroundColor: "#e0e0e0",
-              borderRadius: 2,
-              height: 10,
-            }}
-          >
-            <Box
-              // Move to CSS or use styled-components
-              sx={{
-                width: getProgressWidth(profileUser.xp),
-                backgroundColor: "#56CCF2",
-                height: "100%",
-                borderRadius: 2,
-              }}
-            />
+          <Box sx={{ minWidth: 150, display: "flex", flexDirection: "column", gap: 1, textAlign: "right" }}>
+            <Typography><b>Pet Type:</b> {pet.name}</Typography>
+            <Typography><b>Level:</b> {profileUser.level} (XP: {profileUser.xp})</Typography>
+            <Typography><b>Age:</b> {profileUser.age || "—"}</Typography>
+          </Box>
+
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <img className="profile-pet-image" src={pet.image} alt={pet.name} />
+          </Box>
+
+          <Box sx={{ minWidth: 150, display: "flex", flexDirection: "column", gap: 1, textAlign: "left" }}>
+            <Typography><b>Treat:</b> {profileUser.treat || "—"}</Typography>
+            <Typography><b>Fur Color:</b> {profileUser.color || "—"}</Typography>
+            <Typography><b>Eye Color:</b> {profileUser.eyes || "—"}</Typography>
           </Box>
         </CardContent>
 
         <Box sx={{ mt: 3, width: "100%", display: "flex", flexDirection: "column", alignItems: "center", gap: 1 }}>
-          <Box sx={{ width: "40%", backgroundColor: "#e0e0e0", borderRadius: 2, height: 10 }}>
-            <Box sx={{ width: progressWidth, backgroundColor: "#56CCF2", height: "100%", borderRadius: 2 }} />
-          </Box>
+          <div className="xp-bar">
+            <div className="xp-progress" style={{ width: progressWidth }}></div>
+          </div>
         </Box>
       </Card>
 
-      <Box
-        // Move to CSS or use styled-components
-        sx={{
-          width: "100%",
-          maxWidth: 1050,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-        }}
-      >
-        <Typography variant="h5" sx={{ mb: 2 }}>
+      <div className="profile-posts-section">
+        <Typography className="profile-posts-title" variant="h5">
           Posts by @{profileUser.username}
         </Typography>
+
         {userPosts.length === 0 ? (
           <Typography>No posts yet.</Typography>
         ) : (
@@ -140,9 +126,10 @@ const ProfilePage = () => {
             />
           ))
         )}
-      </Box>
+      </div>
     </Box>
-  );
+  </div>
+);
 };
 
-export default ProfilePage;*/
+export default ProfilePage;

@@ -9,7 +9,6 @@ interface AddProps {
 
 
 const Add: React.FC<AddProps> = ({
-  // Remove console log if not needed anymore
   onClick = () => console.log("Add button clicked"),
 }) => {
   return (

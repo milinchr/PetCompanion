@@ -68,7 +68,7 @@
 .btn-skip {
   background-color: #8e9aaf !important;
   border: none !important;
-  color: black !important;
+  color: rgb(255, 255, 255) !important;
   transition: background-color 0.3s ease;
 }
 

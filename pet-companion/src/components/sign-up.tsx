@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useAuth } from "./auth-context";
-import { TextField, Box, Typography } from "@mui/material";
+import { TextField, Box, Typography, MenuItem } from "@mui/material";
 import React, { useState } from "react";
+import "../styles/sign-up.css";
 
 const pets = [
   { id: "cat", name: "Cat" },
@@ -13,6 +14,45 @@ const pets = [
   { id: "parrot", name: "Parrot" },
   { id: "rabbit", name: "Rabbit" },
 ];
+
+const petOptions = {
+  cat: {
+    treat: ["Tuna", "Chicken", "Salmon", "Catnip"],
+    age: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17",
+      "18", "19", "20"],
+    color: ["White", "Black", "Orange", "Gray", "Calico"],
+    eyes: ["Green", "Blue", "Amber", "Yellow"],
+  },
+  dog: {
+    treat: ["Bone", "Biscuit", "Beef", "Peanut Butter"],
+    age: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17",
+      "18", "19", "20"],
+    color: ["Brown", "Black", "Golden", "White", "Gray"],
+    eyes: ["Brown", "Blue", "Hazel"],
+  },
+  hamster: {
+    treat: ["Seeds", "Sunflower", "Apple", "Carrot"],
+    age: ["0.5", "1", "2", "3", "4"],
+    color: ["Golden", "White", "Gray", "Black"],
+    eyes: ["Black", "Red"],
+  },
+  parrot: {
+    treat: ["Seeds", "Apple", "Berry", "Nuts"],
+    age: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17",
+      "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"],
+    color: ["Green", "Blue", "Red", "Yellow", "Multicolor"],
+    eyes: ["Orange", "Brown", "Black"],
+  },
+  rabbit: {
+    treat: ["Carrot", "Apple", "Leafy Greens", "Pellets"],
+    age: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+    color: ["White", "Brown", "Gray", "Black"],
+    eyes: ["Red", "Brown", "Blue"],
+  },
+} as const;
+
+type PetType = keyof typeof petOptions;
+type PetField = keyof (typeof petOptions)["cat"];
 
 const validationSchema = yup.object().shape({
   username: yup.string().required("Username is required"),
@@ -35,8 +75,7 @@ const validationSchema = yup.object().shape({
   eyes: yup.string().required("Eye color is required"),
 });
 
-// Rename the interface to avoit I prefix
-interface IFormData {
+interface FormData {
   username: string;
   petName: string;
   petType: string;
@@ -55,7 +94,7 @@ const SignUp = () => {
     formState: { errors },
     getValues,
     trigger,
-  } = useForm<IFormData>({
+  } = useForm<FormData>({
     resolver: yupResolver(validationSchema),
     mode: "onSubmit",
   });
@@ -90,15 +129,10 @@ const SignUp = () => {
   const handleSignUp = async () => {
     const isValid = await trigger(["treat", "age", "color", "eyes"]);
     if (!isValid) return;
-    // The issue is that you are calling handleSubmit(onSubmit)()
-    // inside the handleSignUp function, which is not the recommended way to trigger
-    // form submission from a custom handler;
-    // instead, you should call handleSubmit(onSubmit) directly as a function,
-    //  or better move your validation logic into the onSubmit handler and call it only once.
     handleSubmit(onSubmit)();
   };
 
-  const onSubmit = (data: IFormData) => {
+  const onSubmit = (data: FormData) => {
     const success = login(
       data.username,
       data.password,
@@ -144,8 +178,6 @@ const SignUp = () => {
 
           {step === 1 && (
             <>
-              {/* I would suggest to extract the repeated code for Controller into a separate component to reduce redundancy
-            and pass the different values as props */}
               <Controller
                 name="username"
                 control={control}
@@ -264,9 +296,8 @@ const SignUp = () => {
               />
 
               <button
-                className="btn btn-secondary"
+                className="btn btn-secondary btn-login"
                 type="button"
-                id="btn-login"
                 style={{ width: "50%", alignSelf: "center" }}
                 onClick={handleNextStep}
               >
@@ -280,89 +311,75 @@ const SignUp = () => {
           )}
 
           {step === 2 && (
-            <>
-              <Controller
-                name="treat"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Favorite Treat"
-                    variant="outlined"
-                    error={!!errors.treat}
-                    helperText={errors.treat?.message}
-                  />
-                )}
-              />
+  <>
+    {(["treat", "age", "color", "eyes"] as PetField[]).map((fieldName) => {
+      const petType = getValues("petType") as PetType | undefined;
+      const options = petType ? petOptions[petType]?.[fieldName] : null;
+      const labelMap: Record<PetField, string> = {
+        treat: "Favorite Treat",
+        age: "Pet Age",
+        color: "Fur Color",
+        eyes: "Eye Color",
+      };
 
-              <Controller
-                name="age"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Pet Age"
-                    variant="outlined"
-                    error={!!errors.age}
-                    helperText={errors.age?.message}
-                  />
-                )}
+      return (
+        <Controller
+          key={fieldName}
+          name={fieldName as keyof FormData}
+          control={control}
+          defaultValue=""
+          render={({ field }) =>
+            options ? (
+              <TextField
+                {...field}
+                select
+                label={labelMap[fieldName]}
+                variant="outlined"
+                error={!!errors[fieldName as keyof FormData]}
+                helperText={errors[fieldName as keyof FormData]?.message}
+              >
+                {options.map((opt: string) => (
+                  <MenuItem key={opt} value={opt}>
+                    {opt}
+                  </MenuItem>
+                ))}
+              </TextField>
+            ) : (
+              <TextField
+                {...field}
+                label={labelMap[fieldName]}
+                variant="outlined"
+                error={!!errors[fieldName as keyof FormData]}
+                helperText={errors[fieldName as keyof FormData]?.message}
               />
+            )
+          }
+        />
+      );
+    })}
 
-              <Controller
-                name="color"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Fur Color"
-                    variant="outlined"
-                    error={!!errors.color}
-                    helperText={errors.color?.message}
-                  />
-                )}
-              />
+    <Box display="flex" justifyContent="space-between" mt={2}>
+      <button
+        className="btn btn-secondary btn-skip"
+        id=""
+        type="button"
+        style={{ width: "47%", fontWeight: "bold" }}
+        onClick={() => setStep(1)}
+      >
+        ← Back
+      </button>
+      <button
+        className="btn btn-secondary btn-login"
+        type="button"
+        style={{ width: "47%" }}
+        onClick={handleSignUp}
+      >
+        Sign Up
+      </button>
+    </Box>
+  </>
+)}
 
-              <Controller
-                name="eyes"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Eye Color"
-                    variant="outlined"
-                    error={!!errors.eyes}
-                    helperText={errors.eyes?.message}
-                  />
-                )}
-              />
-
-              <Box display="flex" justifyContent="space-between" mt={2}>
-                <button
-                  className="btn btn-secondary"
-                  id="btn-skip"
-                  type="button"
-                  style={{ width: "47%", fontWeight: "bold" }}
-                  onClick={() => setStep(1)}
-                >
-                  ← Back
-                </button>
-                <button
-                  className="btn btn-secondary"
-                  id="btn-login"
-                  type="button"
-                  style={{ width: "47%" }}
-                  onClick={handleSignUp}
-                >
-                  Sign Up
-                </button>
-              </Box>
-            </>
-          )}
         </Box>
       </Box>
     </div>

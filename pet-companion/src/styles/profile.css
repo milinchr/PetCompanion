@@ -4,12 +4,20 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #fffdf7;
+  min-height: 95vh;
+
+  background-image:
+    linear-gradient(to bottom, rgba(255,255,255,0.75), rgba(0,0,0,0.001) 120%),
+    url("../assets/profile-page.gif");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 /* Card styling */
 .profile-card {
-  width: 600px;
+  width: 700px;
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 32px;
@@ -59,5 +67,5 @@
 .profile-posts-title {
   margin-bottom: 1rem;
   font-weight: bold;
-  text-align: left;
+  text-align: center;
 }

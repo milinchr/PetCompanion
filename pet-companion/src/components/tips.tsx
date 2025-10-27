@@ -1,4 +1,5 @@
 import { useState , useEffect} from "react";
+import tipsBg from "../assets/tips-background.gif";
 import {
   Card,
   CardContent,
@@ -20,7 +21,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Add from "./add";
 import { useNavigate } from "react-router-dom";
 
-// It's better to use interface in this case, because you are defining the shape of an object
+
 type Tip = {
   id: number;
   author: string;
@@ -152,9 +153,8 @@ export default function Tips() {
   const [expanded, setExpanded] = useState<number | null>(null);
 
   useEffect(() => {
-    // Load tips from localStorage
     const storedTips = JSON.parse(localStorage.getItem("customTips") || "[]");
-    setAllTips([...tips, ...storedTips]); // combine static + custom
+    setAllTips([...tips, ...storedTips]);
   }, []);
 
   const handleRatingChange = (id: number, value: number | null) => {
@@ -196,14 +196,12 @@ export default function Tips() {
     ],
   };
 
-  // You can navigate directly in the onClick without defining a separate function
   const handleAddClick = () => {
     navigate("/create-tips");
   };
 
   return (
     <Box
-      // Move to CSS or use styled-components
       sx={{
         height: "94vh",
         width: "100%",
@@ -212,8 +210,11 @@ export default function Tips() {
         alignItems: "center",
         flexDirection: "column",
         textAlign: "center",
-        backgroundImage:
-          "url('https://i.pinimg.com/736x/c3/e3/be/c3e3beab1eea6d3d65a7254e317cdc27.jpg')",
+        backgroundImage: `
+        linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(0,0,0,0.2) 120%),
+        url(${tipsBg})
+        `,
+        opacity: 0.8,
         backgroundRepeat: "no-repeat",
         backgroundSize: "100%",
         backgroundAttachment: "fixed",
@@ -222,7 +223,6 @@ export default function Tips() {
       }}
     >
       <Box
-        // Move to CSS or use styled-components
         sx={{
           position: "absolute",
           top: 20,

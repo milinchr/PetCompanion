@@ -24,7 +24,6 @@ const CreateTips: React.FC = () => {
 
   const handleSubmit = () => {
     if (!author || !category || !shortText || !fullText) return;
-    // Remove console log if not needed anymore
     const newTip = {
     id: Date.now(),
     author,

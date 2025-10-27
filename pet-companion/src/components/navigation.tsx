@@ -12,7 +12,6 @@ const NavigationBar = () => {
 
   return (
     <header className="Header-navigation">
-      {/* Change to small letter (H -> h)  */}
       <nav className="navbar navbar-expand-lg bg-body-tertiary" id="my-navbar">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">

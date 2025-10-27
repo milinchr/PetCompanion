@@ -1,9 +1,20 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
-interface UserData {
+export interface UserData {
   username: string;
   petName: string;
+  petType: string;
   password: string;
+  treat: string;
+  age: number;
+  color: string;
+  eyes: string;
   level: number;
   xp: number;
 }
@@ -11,8 +22,18 @@ interface UserData {
 interface AuthContextType {
   isLoggedIn: boolean;
   user: UserData | null;
-  login: (username: string, petName: string, password: string) => boolean;
+  login: (
+    username: string,
+    password: string,
+    petName?: string,
+    petType?: string,
+    treat?: string,
+    age?: string,
+    color?: string,
+    eyes?: string
+  ) => boolean;
   logout: () => void;
+  updateUser: (updatedUser: UserData) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,12 +43,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
+    if (savedUser) setUser(JSON.parse(savedUser));
   }, []);
 
-  const login = (username: string, petName: string, password: string): boolean => {
+  const login = (
+    username: string,
+    password: string,
+    petName?: string,
+    petType?: string,
+    treat?: string,
+    age?: string,
+    color?: string,
+    eyes?: string
+  ): boolean => {
     const savedUser = localStorage.getItem(username);
 
     if (savedUser) {
@@ -36,11 +64,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(parsedUser);
         localStorage.setItem("user", JSON.stringify(parsedUser));
         return true;
-      } else {
-        return false;
       }
+      return false;
     } else {
-      const newUser: UserData = { username, petName, password, level: 0, xp: 0 };
+      if (!petName || !petType) return false;
+      const newUser: UserData = {
+        username,
+        petName,
+        petType,
+        password,
+        treat: treat || "",
+        age: Number(age) || 0,
+        color: color || "",
+        eyes: eyes || "",
+        level: 0,
+        xp: 0,
+      };
       localStorage.setItem(username, JSON.stringify(newUser));
       localStorage.setItem("user", JSON.stringify(newUser));
       setUser(newUser);
@@ -53,8 +92,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
   };
 
+  const updateUser = (updatedUser: UserData) => {
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    localStorage.setItem(updatedUser.username, JSON.stringify(updatedUser));
+  };
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn: !!user, user, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        isLoggedIn: !!user,
+        user,
+        login,
+        logout,
+        updateUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

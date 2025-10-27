@@ -3,9 +3,13 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import MainPage from './components/main-page';
 import NavigationBar from './components/navigation';
 import SignUp from './components/sign-up';
-import { AuthProvider, useAuth } from "./components/auth-context";
+import { useAuth } from "./components/auth-context";
 import './App.css';
 import SignIn from './components/sign-in';
+import Tips from "./components/tips";
+import CreatePost from "./components/create-post";
+import CreateTips from "./components/create-tips";
+import ProfilePage from './components/profile-page';
 
 function AppRoutes() {
   const { isLoggedIn } = useAuth();
@@ -24,24 +28,33 @@ function AppRoutes() {
         path="/sign-in"
         element={isLoggedIn ? <Navigate to="/" replace /> : <SignIn />}
       />
+      <Route
+        path="/create-post"
+        element={isLoggedIn ? <CreatePost /> : <Navigate to="/sign-in" replace />}
+      />
+      <Route path="/tips" element={<Tips />} />
+      <Route
+        path="/create-tips"
+        element={isLoggedIn ? <CreateTips /> : <Navigate to="/sign-in" replace />}
+      />
+      <Route path="/profile/:username" element={<ProfilePage />} />
+      <Route path="/create-tips" element={<CreateTips />} />
     </Routes>
   );
 }
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="App">
-          <header className="Header-navigation">
-            <NavigationBar />
-          </header>
-          <div className="PetCompanionApp">
-            <AppRoutes />
-          </div>
+    <Router>
+      <div className="App">
+        <header className="Header-navigation">
+          <NavigationBar />
+        </header>
+        <div className="PetCompanionApp">
+          <AppRoutes />
         </div>
-      </Router>
-    </AuthProvider>
+      </div>
+    </Router>
   );
 }
 

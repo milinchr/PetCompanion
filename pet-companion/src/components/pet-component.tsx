@@ -1,30 +1,67 @@
+import { useEffect } from "react";
+import { useAuth } from "../components/auth-context";
+import { useNavigate } from "react-router-dom";
+
 import cat from "../images/pets/cat.png";
+import dog from "../images/pets/dog.png";
+import hamster from "../images/pets/hamster.png";
+import parrot from "../images/pets/parrot.png";
+import rabbit from "../images/pets/rabbit.png";
 
-interface IPet{
-    name : string;
-    username : string;
-    type : string;
-    level : number;
-    XP : number;
-}
+const pets: Record<string, { name: string; image: string }> = {
+  cat: { name: "Cat", image: cat },
+  dog: { name: "Dog", image: dog },
+  hamster: { name: "Hamster", image: hamster },
+  parrot: { name: "Parrot", image: parrot },
+  rabbit: { name: "Rabbit", image: rabbit },
+};
 
-const PetPanel = ({ name, username, type, level, XP } : IPet) => {
-    if(XP === 20) {
-        XP = 0;
-        level += 1;
+const PetPanel = () => {
+  const { user, updateUser } = useAuth();
+  const navigate = useNavigate();
+
+  const level = user?.level ?? 0;
+  const xp = user?.xp ?? 0;
+
+  const handleClick = () => {
+    if (user) navigate(`/profile/${user.username}`);
+  };
+
+  useEffect(() => {
+    if (!user) return; 
+
+    if (xp >= 20) {
+      const newXP = xp - 20;
+      const newLevel = level + 1;
+      const updatedUser = { ...user, level: newLevel, xp: newXP };
+      updateUser(updatedUser);
     }
-    return (<div className="PetPanel" style={{backgroundImage: "../assets/paws-bg.png"}}>
-        <h1>{name}</h1>
-        <p>{username}</p>
-        {type === "cat" && <img src={cat} width={500} height={500} alt="Cat" />}
-        <p>Level: {level}(XP: {XP})</p>
-        <div className="progress">
-            {XP === 0 && <div className="progress-bar" style={{ width: "0%" }}></div>}
-            {XP === 5 && <div className="progress-bar" style={{ width: "25%" }}></div>}
-            {XP === 10 && <div className="progress-bar" style={{ width: "50%" }}></div>}
-            {XP === 15 && <div className="progress-bar" style={{ width: "75%" }}></div>}
-        </div>
-    </div>);
+  }, [xp, level, user, updateUser]);
+
+  if (!user) return <p>Please login</p>;
+
+  const getProgressWidth = (xp: number) => `${(xp / 20) * 100}%`;
+
+  const pet = pets[user.petType] ?? pets["cat"];
+
+  return (
+    <div className="pet-panel">
+      <h1>{user.petName}</h1>
+      <p onClick={handleClick} style={{ cursor: "pointer" }}>
+        {user.username}
+      </p>
+      <img src={pet.image} width={500} height={500} alt={pet.name} />
+      <p>
+        Level: {user.level} (XP: {user.xp})
+      </p>
+      <div className="progress">
+        <div
+          className="progress-bar"
+          style={{ width: getProgressWidth(user.xp) }}
+        ></div>
+      </div>
+    </div>
+  );
 };
 
 export default PetPanel;

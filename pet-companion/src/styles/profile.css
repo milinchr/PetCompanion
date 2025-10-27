@@ -1,0 +1,71 @@
+/* General layout */
+.profile-page {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 95vh;
+
+  background-image:
+    linear-gradient(to bottom, rgba(255,255,255,0.75), rgba(0,0,0,0.001) 120%),
+    url("../assets/profile-page.gif");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/* Card styling */
+.profile-card {
+  width: 700px;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+  background-color: #fffdf7;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-pet-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* XP progress bar */
+.xp-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.xp-progress {
+  height: 100%;
+  background-color: #56ccf2;
+  border-radius: 8px;
+  transition: width 0.3s ease;
+}
+
+/* Posts section */
+.profile-posts-section {
+  width: 100%;
+  max-width: 1050px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-posts-title {
+  margin-bottom: 1rem;
+  font-weight: bold;
+  text-align: center;
+}
